@@ -1,0 +1,73 @@
+mutation CreateSeedData @transaction @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public for seeding data.") {
+  user_insertMany(data: [
+    {
+      id: "6b7e8a9d-8c2a-4b8a-9d3a-9b3c2b1a4e5f",
+      displayName: "demouser1",
+      email: "demouser1@example.com",
+      userType: "student"
+    },
+    {
+      id: "7c8f9b0e-9d3b-4c9b-9e4a-9c4d3c2b1a4e6g",
+      displayName: "demouser2",
+      email: "demouser2@example.com",
+      userType: "coach"
+    }
+  ])
+  course_insertMany(data: [
+    {
+      id: "8d9g0c1f-0e4c-4d9c-9f5b-9d5e4d3c2b1a4e7h",
+      coachId: "7c8f9b0e-9d3b-4c9b-9e4a-9c4d3c2b1a4e6g",
+      description: "Example course 1",
+      title: "Demo Course 1"
+    },
+    {
+      id: "9g0h1d2i-1f5d-4e0d-0g6c-0e6f5e4d3c2b1a4e8i",
+      coachId: "7c8f9b0e-9d3b-4c9b-9e4a-9c4d3c2b1a4e6g",
+      description: "Example course 2",
+      title: "Demo Course 2"
+    }
+  ])
+  enrollment_insertMany(data: [
+    {
+      studentId: "6b7e8a9d-8c2a-4b8a-9d3a-9b3c2b1a4e5f",
+      courseId: "8d9g0c1f-0e4c-4d9c-9f5b-9d5e4d3c2b1a4e7h",
+      status: "enrolled"
+    },
+    {
+      studentId: "6b7e8a9d-8c2a-4b8a-9d3a-9b3c2b1a4e5f",
+      courseId: "9g0h1d2i-1f5d-4e0d-0g6c-0e6f5e4d3c2b1a4e8i",
+      status: "completed"
+    }
+  ])
+  assignment_insertMany(data: [
+    {
+      courseId: "8d9g0c1f-0e4c-4d9c-9f5b-9d5e4d3c2b1a4e7h",
+      creatorId: "7c8f9b0e-9d3b-4c9b-9e4a-9c4d3c2b1a4e6g",
+      dueDate: "2024-12-31",
+      maxPoints: 100,
+      title: "Demo Assignment 1",
+      description: "Demo Assignment 1 description",
+      createdAt: "2024-12-01T00:00:00Z",
+      updatedAt: "2024-12-01T00:00:00Z"
+    }
+  ])
+  submission_insertMany(data: [
+    {
+      assignmentId: "8d9g0c1f-0e4c-4d9c-9f5b-9d5e4d3c2b1a4e7h",
+      studentId: "6b7e8a9d-8c2a-4b8a-9d3a-9b3c2b1a4e5f",
+      status: "submitted",
+      submissionDate: "2024-12-30T00:00:00Z",
+      createdAt: "2024-12-30T00:00:00Z",
+      updatedAt: "2024-12-30T00:00:00Z"
+    }
+  ])
+  material_insertMany(data: [
+    {
+      courseId: "8d9g0c1f-0e4c-4d9c-9f5b-9d5e4d3c2b1a4e7h",
+      contentType: "text",
+      title: "Demo Material 1",
+      createdAt: "2024-12-01T00:00:00Z",
+      updatedAt: "2024-12-01T00:00:00Z"
+    }
+  ])
+}

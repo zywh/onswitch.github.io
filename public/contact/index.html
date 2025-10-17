@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>Contact Me | OnSwitch Cyber Patriot Coaching</title>
+    <meta name="description" content="Cyber Patriot competition coaching and training materials. Helping high school students excel in cybersecurity competitions.">
+    
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://onswitch.ca/contact/">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+<!-- Replace with your actual Firebase config -->
+<script>
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAMa3HXxr9jz7nCXRiCs_GBoveMwvP-f0Q",
+  authDomain: "onswitch-55a54.firebaseapp.com",
+  projectId: "onswitch-55a54",
+  storageBucket: "onswitch-55a54.firebasestorage.app",
+  messagingSenderId: "903676125597",
+  appId: "1:903676125597:web:803e4621e8bb53ddb00f74",
+  measurementId: "G-TC543BX6Y0"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Firebase Auth
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+// Configure Google Auth Provider
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+googleProvider.addScope('email');
+googleProvider.addScope('profile');
+</script>
+
+<!-- 
+To set up Firebase:
+1. Go to https://firebase.google.com/
+2. Create a new project
+3. Enable Authentication with Google provider
+4. Enable Firestore Database
+5. Enable Storage
+6. Replace the config above with your actual values from Project Settings
+-->
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Contact Me | OnSwitch Cyber Patriot Coaching</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="Contact Me" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Cyber Patriot competition coaching and training materials. Helping high school students excel in cybersecurity competitions." />
+<meta property="og:description" content="Cyber Patriot competition coaching and training materials. Helping high school students excel in cybersecurity competitions." />
+<link rel="canonical" href="https://onswitch.ca/contact/" />
+<meta property="og:url" content="https://onswitch.ca/contact/" />
+<meta property="og:site_name" content="OnSwitch Cyber Patriot Coaching" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Contact Me" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Cyber Patriot competition coaching and training materials. Helping high school students excel in cybersecurity competitions.","headline":"Contact Me","url":"https://onswitch.ca/contact/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+    <header class="site-header">
+    <div class="container">
+        <nav class="main-nav">
+            <div class="nav-brand">
+                <a href="/" class="brand-link">
+                    <i class="fas fa-shield-alt"></i>
+                    OnSwitch
+                </a>
+            </div>
+            
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="/" class="nav-link ">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/about" class="nav-link ">
+                        <i class="fas fa-user"></i> About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/contact" class="nav-link active">
+                        <i class="fas fa-envelope"></i> Contact
+                    </a>
+                </li>
+                <li class="nav-item auth-required" style="display: none;">
+                    <a href="/training" class="nav-link ">
+                        <i class="fas fa-book"></i> Training
+                    </a>
+                </li>
+                <li class="nav-item admin-required" style="display: none;">
+                    <a href="/admin" class="nav-link ">
+                        <i class="fas fa-cog"></i> Admin
+                    </a>
+                </li>
+                
+                <!-- Authentication buttons -->
+                <li class="nav-item auth-buttons">
+                    <button id="login-btn" class="btn btn-primary">
+                        <i class="fab fa-google"></i> Sign In
+                    </button>
+                    <div id="user-menu" class="user-menu" style="display: none;">
+                        <img id="user-avatar" class="user-avatar" src="" alt="User Avatar">
+                        <span id="user-name" class="user-name"></span>
+                        <div class="user-dropdown">
+                            <button id="logout-btn" class="btn btn-secondary">
+                                <i class="fas fa-sign-out-alt"></i> Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+    
+    <main class="main-content" role="main">
+        <section class="page-header">
+    <div class="container">
+        <h1><i class="fas fa-envelope"></i> Contact Me</h1>
+        <p>Get in touch for questions about the program or to join the team</p>
+    </div>
+</section>
+
+<section class="contact-content">
+    <div class="container">
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h2>Get In Touch</h2>
+                <p>
+                    I'm always excited to help students get started with cybersecurity and the CyberPatriot competition. 
+                    Whether you're a complete beginner or have some experience, I'm here to help you succeed.
+                </p>
+
+                <div class="contact-methods">
+                    <div class="contact-method">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p><a href="mailto:coach@onswitch.ca">coach@onswitch.ca</a></p>
+                            <small>I typically respond within 24 hours</small>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h3>Office Hours</h3>
+                            <p>Monday - Friday: 3:00 PM - 6:00 PM</p>
+                            <small>Available for questions and help sessions</small>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <i class="fas fa-users"></i>
+                        <div>
+                            <h3>Team Meetings</h3>
+                            <p>Wednesdays & Fridays: 3:30 PM - 5:30 PM</p>
+                            <small>Regular practice sessions and training</small>
+                        </div>
+                    </div>
+
+                    <div class="contact-method">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Location</h3>
+                            <p>Computer Lab, Room 204</p>
+                            <small>Lincoln High School</small>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="quick-links">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="https://www.uscyberpatriot.org/" target="_blank" rel="noopener">
+                            <i class="fas fa-external-link-alt"></i>
+                            CyberPatriot Official Website
+                        </a></li>
+                        <li><a href="https://www.uscyberpatriot.org/competition/competition-overview" target="_blank" rel="noopener">
+                            <i class="fas fa-external-link-alt"></i>
+                            Competition Overview
+                        </a></li>
+                        <li><a href="https://www.uscyberpatriot.org/Documents/CP-XVI-Rules.pdf" target="_blank" rel="noopener">
+                            <i class="fas fa-external-link-alt"></i>
+                            Competition Rules
+                        </a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="contact-form-section">
+                <div class="form-container">
+                    <h2>Send a Message</h2>
+                    <form id="contact-form" class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="grade">Grade Level</label>
+                            <select id="grade" name="grade">
+                                <option value="">Select Grade</option>
+                                <option value="9">9th Grade</option>
+                                <option value="10">10th Grade</option>
+                                <option value="11">11th Grade</option>
+                                <option value="12">12th Grade</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="experience">Cybersecurity Experience</label>
+                            <select id="experience" name="experience">
+                                <option value="">Select Experience Level</option>
+                                <option value="none">No experience</option>
+                                <option value="beginner">Some basic knowledge</option>
+                                <option value="intermediate">Intermediate (some competitions/courses)</option>
+                                <option value="advanced">Advanced (multiple competitions/certifications)</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">Subject *</label>
+                            <select id="subject" name="subject" required>
+                                <option value="">Select a topic</option>
+                                <option value="joining">Interested in joining the team</option>
+                                <option value="questions">Questions about CyberPatriot</option>
+                                <option value="schedule">Schedule and meeting times</option>
+                                <option value="requirements">Prerequisites and requirements</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Tell me about your interest in cybersecurity or any questions you have..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <div class="form-info">
+                    <h3>What to Expect</h3>
+                    <ul>
+                        <li><i class="fas fa-check"></i> Quick response within 24 hours</li>
+                        <li><i class="fas fa-check"></i> Personalized guidance based on your experience</li>
+                        <li><i class="fas fa-check"></i> Information about upcoming meetings and events</li>
+                        <li><i class="fas fa-check"></i> Resources to get started</li>
+                    </ul>
+
+                    <div class="privacy-note">
+                        <p><i class="fas fa-lock"></i> Your information is kept confidential and only used to respond to your inquiry.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="faq">
+    <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <h3>Do I need prior experience to join?</h3>
+                <p>Not at all! We welcome students of all skill levels. I'll work with you to build skills from wherever you're starting.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What is the time commitment?</h3>
+                <p>Regular practice sessions are 2-3 times per week, plus additional time during competition season. It's designed to fit with your school schedule.</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>What equipment do I need?</h3>
+                <p>The school provides computers and software. You just need enthusiasm and willingness to learn!</p>
+            </div>
+
+            <div class="faq-item">
+                <h3>Can I join mid-season?</h3>
+                <p>Yes, you can join at any time during the school year. I'll help you catch up on what you've missed.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contact-form');
+    
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(contactForm);
+        const messageData = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            grade: formData.get('grade'),
+            experience: formData.get('experience'),
+            subject: formData.get('subject'),
+            message: formData.get('message'),
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        try {
+            // Save message to Firestore
+            await db.collection('contact-messages').add(messageData);
+            
+            // Show success message
+            if (window.authManager) {
+                window.authManager.showMessage('Message sent successfully! I\'ll get back to you soon.', 'success');
+            }
+            
+            // Reset form
+            contactForm.reset();
+            
+        } catch (error) {
+            console.error('Error sending message:', error);
+            if (window.authManager) {
+                window.authManager.showMessage('Error sending message. Please try again or email directly.', 'error');
+            }
+        }
+    });
+});
+</script>
+    </main>
+    
+    <footer class="site-footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>OnSwitch</h3>
+                <p>Cyber Patriot competition coaching and training materials for high school students.</p>
+                <div class="social-links">
+                    <a href="mailto:coach@onswitch.ca" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li class="auth-required" style="display: none;">
+                        <a href="/training">Training Materials</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://www.uscyberpatriot.org/" target="_blank" rel="noopener">CyberPatriot Official</a></li>
+                    <li><a href="https://www.sans.org/" target="_blank" rel="noopener">SANS Institute</a></li>
+                    <li><a href="https://cybersecurityeducation.org/" target="_blank" rel="noopener">Cybersecurity Education</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 OnSwitch. All rights reserved.</p>
+            <p>Empowering the next generation of cybersecurity professionals.</p>
+        </div>
+    </div>
+</footer>
+    
+    <script src="/assets/js/main.js"></script>
+    
+    <!-- Loading overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading...</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <title>OnSwitch Cyber Patriot Website Deployment Guide | OnSwitch Cyber Patriot Coaching</title>
+    <meta name="description" content="Cyber Patriot competition coaching and training materials. Helping high school students excel in cybersecurity competitions.">
+    
+    <link rel="stylesheet" href="/assets/css/main.css">
+    <link rel="canonical" href="https://onswitch.ca/DEPLOYMENT.html">
+    
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage-compat.js"></script>
+    
+    <!-- Firebase Configuration -->
+<!-- Replace with your actual Firebase config -->
+<script>
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyAMa3HXxr9jz7nCXRiCs_GBoveMwvP-f0Q",
+  authDomain: "onswitch-55a54.firebaseapp.com",
+  projectId: "onswitch-55a54",
+  storageBucket: "onswitch-55a54.firebasestorage.app",
+  messagingSenderId: "903676125597",
+  appId: "1:903676125597:web:803e4621e8bb53ddb00f74",
+  measurementId: "G-TC543BX6Y0"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Firebase Auth
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+// Configure Google Auth Provider
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+googleProvider.addScope('email');
+googleProvider.addScope('profile');
+</script>
+
+<!-- 
+To set up Firebase:
+1. Go to https://firebase.google.com/
+2. Create a new project
+3. Enable Authentication with Google provider
+4. Enable Firestore Database
+5. Enable Storage
+6. Replace the config above with your actual values from Project Settings
+-->
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>OnSwitch Cyber Patriot Website Deployment Guide | OnSwitch Cyber Patriot Coaching</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="OnSwitch Cyber Patriot Website Deployment Guide" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Cyber Patriot competition coaching and training materials. Helping high school students excel in cybersecurity competitions." />
+<meta property="og:description" content="Cyber Patriot competition coaching and training materials. Helping high school students excel in cybersecurity competitions." />
+<link rel="canonical" href="https://onswitch.ca/DEPLOYMENT.html" />
+<meta property="og:url" content="https://onswitch.ca/DEPLOYMENT.html" />
+<meta property="og:site_name" content="OnSwitch Cyber Patriot Coaching" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="OnSwitch Cyber Patriot Website Deployment Guide" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebPage","description":"Cyber Patriot competition coaching and training materials. Helping high school students excel in cybersecurity competitions.","headline":"OnSwitch Cyber Patriot Website Deployment Guide","url":"https://onswitch.ca/DEPLOYMENT.html"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+<body>
+    <header class="site-header">
+    <div class="container">
+        <nav class="main-nav">
+            <div class="nav-brand">
+                <a href="/" class="brand-link">
+                    <i class="fas fa-shield-alt"></i>
+                    OnSwitch
+                </a>
+            </div>
+            
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="/" class="nav-link ">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/about" class="nav-link ">
+                        <i class="fas fa-user"></i> About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/contact" class="nav-link ">
+                        <i class="fas fa-envelope"></i> Contact
+                    </a>
+                </li>
+                <li class="nav-item auth-required" style="display: none;">
+                    <a href="/training" class="nav-link ">
+                        <i class="fas fa-book"></i> Training
+                    </a>
+                </li>
+                <li class="nav-item admin-required" style="display: none;">
+                    <a href="/admin" class="nav-link ">
+                        <i class="fas fa-cog"></i> Admin
+                    </a>
+                </li>
+                
+                <!-- Authentication buttons -->
+                <li class="nav-item auth-buttons">
+                    <button id="login-btn" class="btn btn-primary">
+                        <i class="fab fa-google"></i> Sign In
+                    </button>
+                    <div id="user-menu" class="user-menu" style="display: none;">
+                        <img id="user-avatar" class="user-avatar" src="" alt="User Avatar">
+                        <span id="user-name" class="user-name"></span>
+                        <div class="user-dropdown">
+                            <button id="logout-btn" class="btn btn-secondary">
+                                <i class="fas fa-sign-out-alt"></i> Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+    
+    <main class="main-content" role="main">
+        <article class="post">
+
+  <header class="post-header">
+    <h1 class="post-title">OnSwitch Cyber Patriot Website Deployment Guide</h1>
+  </header>
+
+  <div class="post-content">
+    <h1 id="onswitch-cyber-patriot-website-deployment-guide">OnSwitch Cyber Patriot Website Deployment Guide</h1>
+
+<h2 id="github-repository-setup">GitHub Repository Setup</h2>
+
+<ol>
+  <li>
+    <p><strong>Create a new GitHub repository</strong> named <code class="language-plaintext highlighter-rouge">onswitch</code> (or your preferred name)</p>
+  </li>
+  <li>
+    <p><strong>Push your code to GitHub:</strong></p>
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>git init
+git add <span class="nb">.</span>
+git commit <span class="nt">-m</span> <span class="s2">"Initial commit: OnSwitch CyberPatriot website"</span>
+git branch <span class="nt">-M</span> main
+git remote add origin https://github.com/YOUR_USERNAME/onswitch.git
+git push <span class="nt">-u</span> origin main
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h2 id="github-pages-configuration">GitHub Pages Configuration</h2>
+
+<ol>
+  <li><strong>Enable GitHub Pages:</strong>
+    <ul>
+      <li>Go to your repository → Settings → Pages</li>
+      <li>Source: “GitHub Actions”</li>
+      <li>The workflow will automatically deploy when you push to main</li>
+    </ul>
+  </li>
+  <li><strong>Custom Domain Setup:</strong>
+    <ul>
+      <li>In Pages settings, add your custom domain: <code class="language-plaintext highlighter-rouge">onswitch.ca</code></li>
+      <li>Ensure the CNAME file is in your repository root (already included)</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="dns-configuration-for-onswitchca">DNS Configuration for onswitch.ca</h2>
+
+<p>Configure these DNS records with your domain registrar:</p>
+
+<h3 id="a-records-for-apex-domain">A Records (for apex domain)</h3>
+<p>Point <code class="language-plaintext highlighter-rouge">onswitch.ca</code> to GitHub Pages IP addresses:</p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>185.199.108.153
+185.199.109.153
+185.199.110.153
+185.199.111.153
+</code></pre></div></div>
+
+<h3 id="cname-record-for-www-subdomain">CNAME Record (for www subdomain)</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>www.onswitch.ca → YOUR_USERNAME.github.io
+</code></pre></div></div>
+
+<h3 id="example-dns-configuration">Example DNS Configuration</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Type    Name    Value
+A       @       185.199.108.153
+A       @       185.199.109.153
+A       @       185.199.110.153
+A       @       185.199.111.153
+CNAME   www     your-username.github.io
+</code></pre></div></div>
+
+<h2 id="firebase-setup">Firebase Setup</h2>
+
+<ol>
+  <li><strong>Create Firebase Project:</strong>
+    <ul>
+      <li>Go to <a href="https://console.firebase.google.com/">Firebase Console</a></li>
+      <li>Create new project named “onswitch-cyberpatriot”</li>
+    </ul>
+  </li>
+  <li><strong>Enable Authentication:</strong>
+    <ul>
+      <li>Authentication → Sign-in method</li>
+      <li>Enable “Google” provider</li>
+      <li>Add your domain (onswitch.ca) to authorized domains</li>
+    </ul>
+  </li>
+  <li><strong>Enable Firestore:</strong>
+    <ul>
+      <li>Firestore Database → Create database</li>
+      <li>Start in test mode (configure security rules later)</li>
+    </ul>
+  </li>
+  <li><strong>Enable Storage:</strong>
+    <ul>
+      <li>Storage → Get started</li>
+      <li>Use default security rules for now</li>
+    </ul>
+  </li>
+  <li><strong>Get Firebase Config:</strong>
+    <ul>
+      <li>Project Settings → General → Your apps</li>
+      <li>Add web app</li>
+      <li>Copy configuration object</li>
+      <li>Update <code class="language-plaintext highlighter-rouge">_includes/firebase-config.html</code> with your config</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="security-rules">Security Rules</h2>
+
+<h3 id="firestore-security-rules">Firestore Security Rules</h3>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">rules_version</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">;</span>
+<span class="nx">service</span> <span class="nx">cloud</span><span class="p">.</span><span class="nx">firestore</span> <span class="p">{</span>
+  <span class="nx">match</span> <span class="o">/</span><span class="nx">databases</span><span class="o">/</span><span class="p">{</span><span class="nx">database</span><span class="p">}</span><span class="sr">/documents </span><span class="err">{
+</span>    <span class="c1">// Users collection - users can read/write their own data</span>
+    <span class="nx">match</span> <span class="o">/</span><span class="nx">users</span><span class="o">/</span><span class="p">{</span><span class="nx">userId</span><span class="p">}</span> <span class="p">{</span>
+      <span class="nx">allow</span> <span class="nx">read</span><span class="p">,</span> <span class="na">write</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">uid</span> <span class="o">==</span> <span class="nx">userId</span><span class="p">;</span>
+      <span class="nx">allow</span> <span class="na">read</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> 
+        <span class="kd">get</span><span class="p">(</span><span class="sr">/databases/</span><span class="nx">$</span><span class="p">(</span><span class="nx">database</span><span class="p">)</span><span class="o">/</span><span class="nx">documents</span><span class="o">/</span><span class="nx">users</span><span class="o">/</span><span class="nx">$</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">uid</span><span class="p">)).</span><span class="nx">data</span><span class="p">.</span><span class="nx">role</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// Training materials - authenticated users can read, admins can write</span>
+    <span class="nx">match</span> <span class="o">/</span><span class="nx">training</span><span class="o">-</span><span class="nx">materials</span><span class="o">/</span><span class="p">{</span><span class="nx">materialId</span><span class="p">}</span> <span class="p">{</span>
+      <span class="nx">allow</span> <span class="na">read</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">;</span>
+      <span class="nx">allow</span> <span class="na">write</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> 
+        <span class="kd">get</span><span class="p">(</span><span class="sr">/databases/</span><span class="nx">$</span><span class="p">(</span><span class="nx">database</span><span class="p">)</span><span class="o">/</span><span class="nx">documents</span><span class="o">/</span><span class="nx">users</span><span class="o">/</span><span class="nx">$</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">uid</span><span class="p">)).</span><span class="nx">data</span><span class="p">.</span><span class="nx">role</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// Assignments - authenticated users can read, admins can write</span>
+    <span class="nx">match</span> <span class="o">/</span><span class="nx">assignments</span><span class="o">/</span><span class="p">{</span><span class="nx">assignmentId</span><span class="p">}</span> <span class="p">{</span>
+      <span class="nx">allow</span> <span class="na">read</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">;</span>
+      <span class="nx">allow</span> <span class="na">write</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> 
+        <span class="kd">get</span><span class="p">(</span><span class="sr">/databases/</span><span class="nx">$</span><span class="p">(</span><span class="nx">database</span><span class="p">)</span><span class="o">/</span><span class="nx">documents</span><span class="o">/</span><span class="nx">users</span><span class="o">/</span><span class="nx">$</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">uid</span><span class="p">)).</span><span class="nx">data</span><span class="p">.</span><span class="nx">role</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// Submissions - users can create/read their own, admins can read all</span>
+    <span class="nx">match</span> <span class="o">/</span><span class="nx">submissions</span><span class="o">/</span><span class="p">{</span><span class="nx">submissionId</span><span class="p">}</span> <span class="p">{</span>
+      <span class="nx">allow</span> <span class="na">create</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">uid</span> <span class="o">==</span> <span class="nx">resource</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">userId</span><span class="p">;</span>
+      <span class="nx">allow</span> <span class="na">read</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> 
+        <span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">uid</span> <span class="o">==</span> <span class="nx">resource</span><span class="p">.</span><span class="nx">data</span><span class="p">.</span><span class="nx">userId</span> <span class="o">||</span> 
+         <span class="kd">get</span><span class="p">(</span><span class="sr">/databases/</span><span class="nx">$</span><span class="p">(</span><span class="nx">database</span><span class="p">)</span><span class="o">/</span><span class="nx">documents</span><span class="o">/</span><span class="nx">users</span><span class="o">/</span><span class="nx">$</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">uid</span><span class="p">)).</span><span class="nx">data</span><span class="p">.</span><span class="nx">role</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span><span class="p">);</span>
+      <span class="nx">allow</span> <span class="na">update</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> 
+        <span class="kd">get</span><span class="p">(</span><span class="sr">/databases/</span><span class="nx">$</span><span class="p">(</span><span class="nx">database</span><span class="p">)</span><span class="o">/</span><span class="nx">documents</span><span class="o">/</span><span class="nx">users</span><span class="o">/</span><span class="nx">$</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">uid</span><span class="p">)).</span><span class="nx">data</span><span class="p">.</span><span class="nx">role</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// Contact messages - anyone can create, admins can read</span>
+    <span class="nx">match</span> <span class="o">/</span><span class="nx">contact</span><span class="o">-</span><span class="nx">messages</span><span class="o">/</span><span class="p">{</span><span class="nx">messageId</span><span class="p">}</span> <span class="p">{</span>
+      <span class="nx">allow</span> <span class="na">create</span><span class="p">:</span> <span class="k">if</span> <span class="kc">true</span><span class="p">;</span>
+      <span class="nx">allow</span> <span class="na">read</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> 
+        <span class="kd">get</span><span class="p">(</span><span class="sr">/databases/</span><span class="nx">$</span><span class="p">(</span><span class="nx">database</span><span class="p">)</span><span class="o">/</span><span class="nx">documents</span><span class="o">/</span><span class="nx">users</span><span class="o">/</span><span class="nx">$</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">uid</span><span class="p">)).</span><span class="nx">data</span><span class="p">.</span><span class="nx">role</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="firebase-storage-security-rules">Firebase Storage Security Rules</h3>
+<div class="language-javascript highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nx">rules_version</span> <span class="o">=</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">;</span>
+<span class="nx">service</span> <span class="nx">firebase</span><span class="p">.</span><span class="nx">storage</span> <span class="p">{</span>
+  <span class="nx">match</span> <span class="o">/</span><span class="nx">b</span><span class="o">/</span><span class="p">{</span><span class="nx">bucket</span><span class="p">}</span><span class="sr">/o </span><span class="err">{
+</span>    <span class="c1">// Training materials - admins can upload, authenticated users can download</span>
+    <span class="nx">match</span> <span class="o">/</span><span class="nx">training</span><span class="o">-</span><span class="nx">materials</span><span class="o">/</span><span class="p">{</span><span class="nx">allPaths</span><span class="o">=**</span><span class="p">}</span> <span class="p">{</span>
+      <span class="nx">allow</span> <span class="na">read</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span><span class="p">;</span>
+      <span class="nx">allow</span> <span class="na">write</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> 
+        <span class="nx">firestore</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="sr">/databases/</span><span class="p">(</span><span class="k">default</span><span class="p">)</span><span class="o">/</span><span class="nx">documents</span><span class="o">/</span><span class="nx">users</span><span class="o">/</span><span class="nx">$</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">uid</span><span class="p">)).</span><span class="nx">data</span><span class="p">.</span><span class="nx">role</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">}</span>
+    
+    <span class="c1">// Assignment submissions - users can upload their own files</span>
+    <span class="nx">match</span> <span class="o">/</span><span class="nx">submissions</span><span class="o">/</span><span class="p">{</span><span class="nx">userId</span><span class="p">}</span><span class="sr">/{allPaths=**} </span><span class="err">{
+</span>      <span class="nx">allow</span> <span class="nx">read</span><span class="p">,</span> <span class="nx">write</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">uid</span> <span class="o">==</span> <span class="nx">userId</span><span class="p">;</span>
+      <span class="nx">allow</span> <span class="nx">read</span><span class="p">:</span> <span class="k">if</span> <span class="nx">request</span><span class="p">.</span><span class="nx">auth</span> <span class="o">!=</span> <span class="kc">null</span> <span class="o">&amp;&amp;</span> 
+        <span class="nx">firestore</span><span class="p">.</span><span class="kd">get</span><span class="p">(</span><span class="sr">/databases/</span><span class="p">(</span><span class="k">default</span><span class="p">)</span><span class="o">/</span><span class="nx">documents</span><span class="o">/</span><span class="nx">users</span><span class="o">/</span><span class="nx">$</span><span class="p">(</span><span class="nx">request</span><span class="p">.</span><span class="nx">auth</span><span class="p">.</span><span class="nx">uid</span><span class="p">)).</span><span class="nx">data</span><span class="p">.</span><span class="nx">role</span> <span class="o">==</span> <span class="dl">'</span><span class="s1">admin</span><span class="dl">'</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="initial-admin-setup">Initial Admin Setup</h2>
+
+<ol>
+  <li><strong>Create your admin account:</strong>
+    <ul>
+      <li>Visit your deployed site</li>
+      <li>Sign in with Google</li>
+      <li>Your user will be created with role ‘student’ by default</li>
+    </ul>
+  </li>
+  <li><strong>Manually promote to admin:</strong>
+    <ul>
+      <li>Go to Firebase Console → Firestore</li>
+      <li>Find your user document in the ‘users’ collection</li>
+      <li>Edit the document: set <code class="language-plaintext highlighter-rouge">role: 'admin'</code> and <code class="language-plaintext highlighter-rouge">approved: true</code></li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="deployment-checklist">Deployment Checklist</h2>
+
+<ul class="task-list">
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Repository created and code pushed to GitHub</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />GitHub Pages enabled with GitHub Actions source</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Custom domain configured in GitHub Pages settings</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />DNS records configured for onswitch.ca</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Firebase project created and configured</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Firebase config updated in website</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Security rules deployed</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />Initial admin account created and promoted</li>
+  <li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" disabled="disabled" />SSL certificate obtained (automatic with GitHub Pages)</li>
+</ul>
+
+<h2 id="monitoring-and-maintenance">Monitoring and Maintenance</h2>
+
+<ol>
+  <li><strong>Monitor deployments</strong> in the Actions tab of your repository</li>
+  <li><strong>Check Firebase usage</strong> in the Firebase Console</li>
+  <li><strong>Review security rules</strong> periodically</li>
+  <li><strong>Update dependencies</strong> regularly with <code class="language-plaintext highlighter-rouge">bundle update</code></li>
+</ol>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<ul>
+  <li><strong>Build failures:</strong> Check the Actions tab for error logs</li>
+  <li><strong>Authentication issues:</strong> Verify Firebase configuration and authorized domains</li>
+  <li><strong>DNS issues:</strong> Use tools like <code class="language-plaintext highlighter-rouge">dig</code> or <code class="language-plaintext highlighter-rouge">nslookup</code> to verify DNS propagation</li>
+  <li><strong>SSL issues:</strong> May take up to 24 hours for GitHub Pages SSL to activate</li>
+</ul>
+
+<h2 id="support">Support</h2>
+
+<p>For issues with:</p>
+<ul>
+  <li><strong>GitHub Pages:</strong> Check GitHub Pages documentation</li>
+  <li><strong>Firebase:</strong> Check Firebase documentation</li>
+  <li><strong>DNS:</strong> Contact your domain registrar</li>
+  <li><strong>Website functionality:</strong> Check browser console for JavaScript errors</li>
+</ul>
+
+  </div>
+
+</article>
+
+    </main>
+    
+    <footer class="site-footer">
+    <div class="container">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>OnSwitch</h3>
+                <p>Cyber Patriot competition coaching and training materials for high school students.</p>
+                <div class="social-links">
+                    <a href="mailto:coach@onswitch.ca" title="Email">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/about">About</a></li>
+                    <li><a href="/contact">Contact</a></li>
+                    <li class="auth-required" style="display: none;">
+                        <a href="/training">Training Materials</a>
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Resources</h3>
+                <ul>
+                    <li><a href="https://www.uscyberpatriot.org/" target="_blank" rel="noopener">CyberPatriot Official</a></li>
+                    <li><a href="https://www.sans.org/" target="_blank" rel="noopener">SANS Institute</a></li>
+                    <li><a href="https://cybersecurityeducation.org/" target="_blank" rel="noopener">Cybersecurity Education</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2025 OnSwitch. All rights reserved.</p>
+            <p>Empowering the next generation of cybersecurity professionals.</p>
+        </div>
+    </div>
+</footer>
+    
+    <script src="/assets/js/main.js"></script>
+    
+    <!-- Loading overlay -->
+    <div id="loading-overlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Loading...</p>
+        </div>
+    </div>
+</body>
+</html>
