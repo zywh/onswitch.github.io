@@ -343,23 +343,27 @@ document.addEventListener('DOMContentLoaded', () => {
     let cachedUsers = [];
     // Check admin access - TEMPORARILY BYPASSED FOR TESTING
     function checkAdminAccess() {
+        console.log('Checking admin access...');
         // Temporarily allow access without authentication for testing
-        document.querySelector('.admin-required-page').style.display = 'block';
-        document.querySelector('.admin-required-message').style.display = 'none';
+        const adminPage = document.querySelector('.admin-required-page');
+        const adminMessage = document.querySelector('.admin-required-message');
+        
+        if (adminPage) adminPage.style.display = 'block';
+        if (adminMessage) adminMessage.style.display = 'none';
+        
+        console.log('Admin page elements found:', {
+            adminPage: !!adminPage,
+            adminMessage: !!adminMessage
+        });
         
         // Wait for Firebase to initialize, then load data
-        if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
+        if (typeof firebase !== 'undefined' && firebase.apps && firebase.apps.length > 0) {
+            console.log('Firebase available, loading real data...');
             loadAdminData();
         } else {
-            // Retry after a short delay if Firebase isn't ready
-            setTimeout(() => {
-                if (typeof firebase !== 'undefined' && firebase.apps.length > 0) {
-                    loadAdminData();
-                } else {
-                    console.error('Firebase not initialized');
-                    showMockData(); // Show mock data for demo purposes
-                }
-            }, 1000);
+            console.log('Firebase not available, using mock data...');
+            // Show mock data immediately for demo purposes
+            showMockData();
         }
         
         // Original code (commented out for testing):
@@ -375,6 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Show mock data for demonstration when Firebase isn't available
     function showMockData() {
+        console.log('Showing mock data for testing...');
         const tableBody = document.getElementById('users-table-body');
         const mockUsers = [
             {
@@ -415,7 +420,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <tr>
                 <td>
                     <div class="user-info">
-                        <img src="/assets/images/default-avatar.png" alt="Avatar" class="user-avatar-small">
+                        <img src="https://via.placeholder.com/32x32/007bff/ffffff?text=U" alt="Avatar" class="user-avatar-small" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTYiIGN5PSIxNiIgcj0iMTYiIGZpbGw9IiMwMDdiZmYiLz4KPHRLEHQ9IngiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjE0Ij5VPC90ZXh0Pgo8L3N2Zz4K'"
                         <span>${user.displayName || 'No name'}</span>
                     </div>
                 </td>
@@ -478,6 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     async function loadAdminData() {
+        console.log('Loading admin data...');
         loadUsers();
     }
 
