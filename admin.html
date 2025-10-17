@@ -339,6 +339,8 @@ permalink: /admin/
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+    let currentSubmissionFilter = 'all';
+    let cachedUsers = [];
     // Check admin access
     function checkAdminAccess() {
         if (window.authManager && window.authManager.isAdmin()) {
@@ -396,6 +398,7 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const snapshot = await db.collection('users').orderBy('createdAt', 'desc').get();
             const users = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+            cachedUsers = users;
 
             // Update stats
             document.getElementById('total-users').textContent = users.length;
@@ -838,7 +841,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 ...doc.data()
             }));
 
-            if (submissions.length === 0) {
+            const filteredSubmissions = submissions.filter(submission => {
+                if (currentSubmissionFilter === 'all') {
+                    return true;
+                }
+                if (currentSubmissionFilter === 'pending') {
+                    return submission.status === 'submitted' || !submission.status;
+                }
+                return submission.status === currentSubmissionFilter;
+            });
+
+            if (filteredSubmissions.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-inbox fa-3x"></i>
@@ -848,7 +861,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return;
             }
 
-            container.innerHTML = submissions.map(submission => `
+            container.innerHTML = filteredSubmissions.map(submission => `
                 <div class="submission-card">
                     <div class="submission-header">
                         <div class="submission-title">
@@ -1084,5 +1097,41 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(checkAdminAccess, 100);
         });
     }
+
+    window.filterSubmissions = () => {
+        const select = document.getElementById('submission-filter');
+        currentSubmissionFilter = select.value;
+        loadSubmissions();
+    };
+
+    window.exportUsers = () => {
+        if (!cachedUsers.length) {
+            window.authManager.showMessage('No users to export yet.', 'info');
+            return;
+        }
+
+        const headers = ['Display Name', 'Email', 'Role', 'Approved', 'Last Login'];
+        const rows = cachedUsers.map(user => [
+            user.displayName || '',
+            user.email || '',
+            user.role || 'student',
+            user.approved ? 'Yes' : 'No',
+            user.lastLogin ? formatDate(user.lastLogin) : 'Never'
+        ]);
+
+        const csvContent = [headers, ...rows]
+            .map(row => row.map(value => `"${String(value).replace(/"/g, '""')}"`).join(','))
+            .join('\n');
+
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `onswitch-users-${new Date().toISOString().split('T')[0]}.csv`;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    };
 });
 </script>

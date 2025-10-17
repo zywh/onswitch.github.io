@@ -3,6 +3,7 @@ class AuthManager {
     constructor() {
         this.currentUser = null;
         this.userRole = null;
+        this.userApproved = false;
         this.init();
     }
 
@@ -90,6 +91,7 @@ class AuthManager {
 
     async handleAuthStateChange(user) {
         this.currentUser = user;
+        this.userApproved = false;
         
         if (user) {
             // User is signed in
@@ -110,11 +112,15 @@ class AuthManager {
             if (userDoc.exists) {
                 const userData = userDoc.data();
                 this.userRole = userData.role || 'student';
+                this.userApproved = !!userData.approved;
                 
                 // Check if user is approved
-                if (!userData.approved && this.userRole !== 'admin') {
+                if (!this.userApproved && this.userRole !== 'admin') {
                     this.showMessage('Your account is pending approval. Contact the coach for access.', 'warning');
                 }
+            } else {
+                this.userRole = 'student';
+                this.userApproved = false;
             }
         } catch (error) {
             console.error('Error loading user role:', error);
@@ -131,14 +137,18 @@ class AuthManager {
             if (loginBtn) loginBtn.style.display = 'none';
             if (userMenu) userMenu.style.display = 'block';
 
-            // Show auth-required elements for approved users
+            // Show auth-required elements for approved users only
             if (this.isUserApproved()) {
                 authRequired.forEach(el => el.style.display = 'block');
+            } else {
+                authRequired.forEach(el => el.style.display = 'none');
             }
 
             // Show admin elements for admin users
             if (this.isAdmin()) {
                 adminRequired.forEach(el => el.style.display = 'block');
+            } else {
+                adminRequired.forEach(el => el.style.display = 'none');
             }
         } else {
             if (loginBtn) loginBtn.style.display = 'block';
@@ -178,7 +188,7 @@ class AuthManager {
     }
 
     isUserApproved() {
-        return this.isAdmin() || (this.currentUser && this.userRole && this.userRole !== 'pending');
+        return this.isAdmin() || (this.currentUser && this.userApproved);
     }
 
     showLoading(show) {
