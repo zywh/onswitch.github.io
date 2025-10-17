@@ -1,0 +1,156 @@
+// Reset and Base Styles
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  font-weight: $font-weight-normal;
+  line-height: $line-height-base;
+  color: $text-primary;
+  background-color: $bg-primary;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-family-heading;
+  font-weight: $font-weight-semibold;
+  line-height: $line-height-heading;
+  color: $text-primary;
+  margin-bottom: map-get($spacers, 3);
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1.125rem; }
+
+p {
+  margin-bottom: map-get($spacers, 4);
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+a {
+  color: $primary-light;
+  text-decoration: none;
+  transition: $transition-base;
+  
+  &:hover {
+    color: $primary-color;
+    text-decoration: underline;
+  }
+}
+
+// Lists
+ul, ol {
+  margin-bottom: map-get($spacers, 4);
+  padding-left: map-get($spacers, 5);
+  
+  li {
+    margin-bottom: map-get($spacers, 2);
+  }
+}
+
+// Code
+code {
+  font-family: $font-family-mono;
+  font-size: 0.875em;
+  color: $accent-color;
+  background-color: $bg-light;
+  padding: 0.125rem 0.25rem;
+  border-radius: $border-radius-sm;
+}
+
+pre {
+  font-family: $font-family-mono;
+  font-size: 0.875rem;
+  background-color: $bg-dark;
+  color: $text-light;
+  padding: map-get($spacers, 4);
+  border-radius: $border-radius;
+  overflow-x: auto;
+  margin-bottom: map-get($spacers, 4);
+  
+  code {
+    color: inherit;
+    background: none;
+    padding: 0;
+  }
+}
+
+// Images
+img {
+  max-width: 100%;
+  height: auto;
+  border-radius: $border-radius;
+}
+
+// Tables
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: map-get($spacers, 4);
+  
+  th, td {
+    padding: map-get($spacers, 3);
+    text-align: left;
+    border-bottom: 1px solid $border-color;
+  }
+  
+  th {
+    font-weight: $font-weight-semibold;
+    background-color: $bg-secondary;
+  }
+}
+
+// Form Elements
+input, textarea, select {
+  font-family: inherit;
+  font-size: inherit;
+  line-height: inherit;
+}
+
+// Focus styles
+*:focus {
+  outline: 2px solid $primary-light;
+  outline-offset: 2px;
+}
+
+// Selection
+::selection {
+  background-color: $primary-light;
+  color: $white;
+}
+
+// Scrollbar
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $bg-secondary;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $gray;
+  border-radius: $border-radius;
+  
+  &:hover {
+    background: $dark-gray;
+  }
+}

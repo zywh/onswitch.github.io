@@ -1,0 +1,62 @@
+<header class="site-header">
+    <div class="container">
+        <nav class="main-nav">
+            <div class="nav-brand">
+                <a href="/" class="brand-link">
+                    <i class="fas fa-shield-alt"></i>
+                    OnSwitch
+                </a>
+            </div>
+            
+            <div class="nav-toggle" id="nav-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            
+            <ul class="nav-menu" id="nav-menu">
+                <li class="nav-item">
+                    <a href="/" class="nav-link {% if page.url == '/' %}active{% endif %}">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/about" class="nav-link {% if page.url == '/about/' %}active{% endif %}">
+                        <i class="fas fa-user"></i> About
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/contact" class="nav-link {% if page.url == '/contact/' %}active{% endif %}">
+                        <i class="fas fa-envelope"></i> Contact
+                    </a>
+                </li>
+                <li class="nav-item auth-required" style="display: none;">
+                    <a href="/training" class="nav-link {% if page.url contains '/training' %}active{% endif %}">
+                        <i class="fas fa-book"></i> Training
+                    </a>
+                </li>
+                <li class="nav-item admin-required" style="display: none;">
+                    <a href="/admin" class="nav-link {% if page.url contains '/admin' %}active{% endif %}">
+                        <i class="fas fa-cog"></i> Admin
+                    </a>
+                </li>
+                
+                <!-- Authentication buttons -->
+                <li class="nav-item auth-buttons">
+                    <button id="login-btn" class="btn btn-primary">
+                        <i class="fab fa-google"></i> Sign In
+                    </button>
+                    <div id="user-menu" class="user-menu" style="display: none;">
+                        <img id="user-avatar" class="user-avatar" src="" alt="User Avatar">
+                        <span id="user-name" class="user-name"></span>
+                        <div class="user-dropdown">
+                            <button id="logout-btn" class="btn btn-secondary">
+                                <i class="fas fa-sign-out-alt"></i> Sign Out
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>

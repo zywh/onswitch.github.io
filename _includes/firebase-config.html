@@ -1,0 +1,36 @@
+<!-- Firebase Configuration -->
+<!-- Replace with your actual Firebase config -->
+<script>
+// Your web app's Firebase configuration
+const firebaseConfig = {
+    apiKey: "your-api-key-here",
+    authDomain: "your-project.firebaseapp.com",
+    projectId: "your-project-id",
+    storageBucket: "your-project.appspot.com",
+    messagingSenderId: "123456789",
+    appId: "your-app-id"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+// Initialize Firebase Auth
+const auth = firebase.auth();
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+// Configure Google Auth Provider
+const googleProvider = new firebase.auth.GoogleAuthProvider();
+googleProvider.addScope('email');
+googleProvider.addScope('profile');
+</script>
+
+<!-- 
+To set up Firebase:
+1. Go to https://firebase.google.com/
+2. Create a new project
+3. Enable Authentication with Google provider
+4. Enable Firestore Database
+5. Enable Storage
+6. Replace the config above with your actual values from Project Settings
+-->

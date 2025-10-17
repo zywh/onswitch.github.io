@@ -1,0 +1,544 @@
+// Admin Dashboard
+.admin-dashboard {
+  padding: map-get($spacers, 6) 0;
+}
+
+.dashboard-tabs {
+  display: flex;
+  border-bottom: 2px solid $border-color;
+  margin-bottom: map-get($spacers, 6);
+  overflow-x: auto;
+  
+  .tab-button {
+    background: none;
+    border: none;
+    padding: map-get($spacers, 4) map-get($spacers, 5);
+    font-size: $font-size-base;
+    font-weight: $font-weight-medium;
+    color: $text-secondary;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: $transition-base;
+    white-space: nowrap;
+    
+    i {
+      margin-right: map-get($spacers, 2);
+    }
+    
+    &:hover {
+      color: $primary-color;
+      background-color: $bg-light;
+    }
+    
+    &.active {
+      color: $primary-color;
+      border-bottom-color: $primary-color;
+      background-color: $bg-light;
+    }
+  }
+}
+
+.tab-content {
+  display: none;
+  
+  &.active {
+    display: block;
+    animation: slideUp 0.3s ease;
+  }
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: map-get($spacers, 6);
+  
+  h2 {
+    margin-bottom: 0;
+    color: $primary-color;
+  }
+  
+  .section-actions {
+    display: flex;
+    gap: map-get($spacers, 3);
+    align-items: center;
+  }
+}
+
+// Admin Stats
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: map-get($spacers, 4);
+  margin-bottom: map-get($spacers, 6);
+}
+
+.stat-card {
+  background-color: $white;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  padding: map-get($spacers, 5);
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 4);
+  box-shadow: $box-shadow-sm;
+  
+  i {
+    font-size: 2rem;
+    color: $primary-light;
+  }
+  
+  .stat-info {
+    .stat-number {
+      display: block;
+      font-size: 1.75rem;
+      font-weight: $font-weight-bold;
+      color: $primary-color;
+      line-height: 1;
+    }
+    
+    .stat-label {
+      font-size: $font-size-sm;
+      color: $text-muted;
+      font-weight: $font-weight-medium;
+    }
+  }
+}
+
+// Admin Tables
+.admin-table {
+  width: 100%;
+  background-color: $white;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  box-shadow: $box-shadow-sm;
+  
+  thead {
+    background-color: $bg-dark;
+    
+    th {
+      color: $white;
+      font-weight: $font-weight-semibold;
+      padding: map-get($spacers, 4);
+      border-bottom: none;
+    }
+  }
+  
+  tbody {
+    tr {
+      transition: $transition-base;
+      
+      &:hover {
+        background-color: $bg-light;
+      }
+      
+      &:not(:last-child) {
+        border-bottom: 1px solid $border-light;
+      }
+    }
+    
+    td {
+      padding: map-get($spacers, 4);
+      vertical-align: middle;
+      border-bottom: none;
+    }
+  }
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: map-get($spacers, 3);
+  
+  .user-avatar-small {
+    width: 32px;
+    height: 32px;
+    border-radius: $border-radius-pill;
+    object-fit: cover;
+  }
+}
+
+.role-select {
+  padding: map-get($spacers, 1) map-get($spacers, 2);
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  font-size: $font-size-sm;
+  background-color: $white;
+}
+
+.action-buttons {
+  display: flex;
+  gap: map-get($spacers, 2);
+}
+
+.loading-cell, .empty-cell, .error-cell {
+  text-align: center;
+  padding: map-get($spacers, 6);
+  color: $text-muted;
+  font-style: italic;
+}
+
+.error-cell {
+  color: $danger-color;
+}
+
+// Training Materials (Admin)
+.materials-list, .assignments-list {
+  display: grid;
+  gap: map-get($spacers, 4);
+}
+
+.material-card, .assignment-card {
+  background-color: $white;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  padding: map-get($spacers, 5);
+  box-shadow: $box-shadow-sm;
+  transition: $transition-base;
+  
+  &:hover {
+    box-shadow: $box-shadow;
+  }
+}
+
+.material-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: map-get($spacers, 4);
+  align-items: center;
+  
+  .material-icon {
+    width: 50px;
+    height: 50px;
+    background-color: $primary-light;
+    border-radius: $border-radius;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    i {
+      font-size: $font-size-lg;
+      color: $white;
+    }
+  }
+  
+  .material-info {
+    h3 {
+      margin-bottom: map-get($spacers, 2);
+      color: $primary-color;
+    }
+    
+    p {
+      color: $text-secondary;
+      margin-bottom: map-get($spacers, 2);
+    }
+    
+    .material-meta {
+      display: flex;
+      gap: map-get($spacers, 4);
+      
+      .material-type {
+        background-color: $bg-secondary;
+        padding: map-get($spacers, 1) map-get($spacers, 2);
+        border-radius: $border-radius;
+        font-size: $font-size-sm;
+        font-weight: $font-weight-medium;
+        color: $primary-color;
+      }
+      
+      .material-date {
+        color: $text-muted;
+        font-size: $font-size-sm;
+      }
+    }
+  }
+  
+  .material-actions {
+    display: flex;
+    gap: map-get($spacers, 2);
+  }
+}
+
+.assignment-card {
+  &.overdue {
+    border-left: 4px solid $danger-color;
+  }
+  
+  .assignment-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: map-get($spacers, 3);
+    
+    h3 {
+      margin-bottom: 0;
+      color: $primary-color;
+    }
+    
+    .assignment-difficulty {
+      padding: map-get($spacers, 1) map-get($spacers, 2);
+      border-radius: $border-radius;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      
+      &.beginner {
+        background-color: lighten($success-color, 40%);
+        color: darken($success-color, 20%);
+      }
+      
+      &.intermediate {
+        background-color: lighten($warning-color, 40%);
+        color: darken($warning-color, 30%);
+      }
+      
+      &.advanced {
+        background-color: lighten($danger-color, 40%);
+        color: darken($danger-color, 20%);
+      }
+    }
+  }
+  
+  .assignment-content {
+    margin-bottom: map-get($spacers, 4);
+    
+    p {
+      color: $text-secondary;
+      margin-bottom: map-get($spacers, 3);
+    }
+    
+    .assignment-details {
+      display: flex;
+      gap: map-get($spacers, 5);
+      
+      .detail {
+        display: flex;
+        align-items: center;
+        gap: map-get($spacers, 2);
+        color: $text-muted;
+        font-size: $font-size-sm;
+        
+        i {
+          color: $primary-light;
+        }
+      }
+    }
+  }
+  
+  .assignment-actions {
+    display: flex;
+    gap: map-get($spacers, 2);
+    justify-content: flex-end;
+  }
+}
+
+// Submissions
+.submissions-list {
+  display: grid;
+  gap: map-get($spacers, 4);
+}
+
+.submission-card {
+  background-color: $white;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  padding: map-get($spacers, 5);
+  box-shadow: $box-shadow-sm;
+  
+  .submission-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: map-get($spacers, 3);
+    
+    .submission-title {
+      h4 {
+        margin-bottom: 0;
+        color: $primary-color;
+      }
+      
+      p {
+        color: $text-muted;
+        font-size: $font-size-sm;
+        margin-bottom: 0;
+      }
+    }
+    
+    .submission-status {
+      padding: map-get($spacers, 1) map-get($spacers, 3);
+      border-radius: $border-radius;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      
+      &.submitted {
+        background-color: lighten($info-color, 40%);
+        color: darken($info-color, 20%);
+      }
+      
+      &.graded {
+        background-color: lighten($success-color, 40%);
+        color: darken($success-color, 20%);
+      }
+      
+      &.pending {
+        background-color: lighten($warning-color, 40%);
+        color: darken($warning-color, 30%);
+      }
+    }
+  }
+  
+  .submission-content {
+    .submission-notes {
+      background-color: $bg-light;
+      padding: map-get($spacers, 3);
+      border-radius: $border-radius;
+      margin-bottom: map-get($spacers, 3);
+      
+      p {
+        margin-bottom: 0;
+        color: $text-secondary;
+        font-style: italic;
+      }
+    }
+    
+    .submission-meta {
+      display: flex;
+      justify-content: space-between;
+      color: $text-muted;
+      font-size: $font-size-sm;
+    }
+  }
+}
+
+// Messages
+.messages-list {
+  display: grid;
+  gap: map-get($spacers, 4);
+}
+
+.message-card {
+  background-color: $white;
+  border: 1px solid $border-color;
+  border-radius: $border-radius-lg;
+  padding: map-get($spacers, 5);
+  box-shadow: $box-shadow-sm;
+  
+  &.unread {
+    border-left: 4px solid $primary-light;
+    background-color: lighten($primary-light, 45%);
+  }
+  
+  .message-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: map-get($spacers, 3);
+    
+    .message-from {
+      h4 {
+        margin-bottom: 0;
+        color: $primary-color;
+      }
+      
+      p {
+        color: $text-muted;
+        font-size: $font-size-sm;
+        margin-bottom: 0;
+      }
+    }
+    
+    .message-subject {
+      color: $text-secondary;
+      font-weight: $font-weight-medium;
+    }
+  }
+  
+  .message-content {
+    color: $text-secondary;
+    line-height: 1.6;
+    margin-bottom: map-get($spacers, 3);
+  }
+  
+  .message-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: $text-muted;
+    font-size: $font-size-sm;
+    
+    .message-actions {
+      display: flex;
+      gap: map-get($spacers, 2);
+    }
+  }
+}
+
+// Training Dashboard
+.training-dashboard {
+  padding: map-get($spacers, 6) 0;
+}
+
+.progress-dashboard {
+  .progress-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: map-get($spacers, 4);
+    margin-bottom: map-get($spacers, 8);
+  }
+  
+  .recent-activity {
+    background-color: $white;
+    border: 1px solid $border-color;
+    border-radius: $border-radius-lg;
+    padding: map-get($spacers, 5);
+    box-shadow: $box-shadow-sm;
+    
+    h3 {
+      margin-bottom: map-get($spacers, 4);
+      color: $primary-color;
+    }
+    
+    #recent-activity-list {
+      .activity-item {
+        display: flex;
+        align-items: center;
+        gap: map-get($spacers, 3);
+        padding: map-get($spacers, 3);
+        border-bottom: 1px solid $border-light;
+        
+        &:last-child {
+          border-bottom: none;
+        }
+        
+        .activity-icon {
+          width: 32px;
+          height: 32px;
+          background-color: $primary-light;
+          border-radius: $border-radius-pill;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          i {
+            color: $white;
+            font-size: $font-size-sm;
+          }
+        }
+        
+        .activity-content {
+          flex: 1;
+          
+          .activity-description {
+            margin-bottom: map-get($spacers, 1);
+            color: $text-primary;
+          }
+          
+          .activity-time {
+            color: $text-muted;
+            font-size: $font-size-sm;
+          }
+        }
+      }
+    }
+  }
+}

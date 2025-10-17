@@ -1,0 +1,137 @@
+---
+layout: default
+title: "Home"
+---
+
+<section class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <i class="fas fa-shield-alt"></i>
+                OnSwitch Cyber Patriot Coaching
+            </h1>
+            <p class="hero-subtitle">
+                Empowering high school students to excel in cybersecurity competitions
+            </p>
+            <div class="hero-buttons">
+                <a href="/about" class="btn btn-primary btn-large">
+                    <i class="fas fa-user"></i>
+                    Learn About the Coach
+                </a>
+                <button id="hero-login" class="btn btn-secondary btn-large" style="display: none;">
+                    <i class="fab fa-google"></i>
+                    Get Started
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features">
+    <div class="container">
+        <h2 class="section-title">What We Offer</h2>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-graduation-cap"></i>
+                </div>
+                <h3>Expert Coaching</h3>
+                <p>Experienced guidance from a dedicated coach who understands the CyberPatriot competition inside and out.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <h3>Training Materials</h3>
+                <p>Comprehensive resources, tutorials, and practice exercises designed specifically for CyberPatriot success.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-tasks"></i>
+                </div>
+                <h3>Assignments & Practice</h3>
+                <p>Structured homework and hands-on practice sessions to build real-world cybersecurity skills.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Team Collaboration</h3>
+                <p>Work together with fellow students in a supportive learning environment.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="container">
+        <div class="cta-content">
+            <h2>Ready to Start Your Cybersecurity Journey?</h2>
+            <p>Join our team and get access to exclusive training materials and personalized coaching.</p>
+            <div id="auth-cta">
+                <button id="cta-login" class="btn btn-primary btn-large">
+                    <i class="fab fa-google"></i>
+                    Sign In with Google
+                </button>
+            </div>
+            <div id="user-cta" style="display: none;">
+                <a href="/training" class="btn btn-primary btn-large">
+                    <i class="fas fa-book"></i>
+                    Access Training Materials
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const heroLogin = document.getElementById('hero-login');
+    const ctaLogin = document.getElementById('cta-login');
+    const authCta = document.getElementById('auth-cta');
+    const userCta = document.getElementById('user-cta');
+
+    // Show login buttons for non-authenticated users
+    function updateHomeCTA() {
+        if (window.authManager && window.authManager.isSignedIn()) {
+            authCta.style.display = 'none';
+            userCta.style.display = 'block';
+            heroLogin.style.display = 'none';
+        } else {
+            authCta.style.display = 'block';
+            userCta.style.display = 'none';
+            heroLogin.style.display = 'inline-block';
+        }
+    }
+
+    // Set up login button handlers
+    if (heroLogin) {
+        heroLogin.addEventListener('click', () => {
+            if (window.authManager) {
+                window.authManager.signIn();
+            }
+        });
+    }
+
+    if (ctaLogin) {
+        ctaLogin.addEventListener('click', () => {
+            if (window.authManager) {
+                window.authManager.signIn();
+            }
+        });
+    }
+
+    // Update CTA when auth state changes
+    if (window.authManager) {
+        auth.onAuthStateChanged(() => {
+            setTimeout(updateHomeCTA, 100); // Small delay to ensure auth state is updated
+        });
+    }
+
+    // Initial update
+    setTimeout(updateHomeCTA, 500);
+});
+</script>

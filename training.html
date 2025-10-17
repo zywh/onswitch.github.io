@@ -1,0 +1,428 @@
+---
+layout: default
+title: "Training Materials"
+permalink: /training/
+---
+
+<section class="page-header">
+    <div class="container">
+        <h1><i class="fas fa-book"></i> Training Materials</h1>
+        <p>Access exclusive resources and assignments for team members</p>
+    </div>
+</section>
+
+<div class="auth-required-page" style="display: none;">
+    <section class="training-dashboard">
+        <div class="container">
+            <div class="dashboard-tabs">
+                <button class="tab-button active" data-tab="materials">
+                    <i class="fas fa-folder"></i>
+                    Materials
+                </button>
+                <button class="tab-button" data-tab="assignments">
+                    <i class="fas fa-tasks"></i>
+                    Assignments
+                </button>
+                <button class="tab-button" data-tab="progress">
+                    <i class="fas fa-chart-line"></i>
+                    Progress
+                </button>
+            </div>
+
+            <!-- Materials Tab -->
+            <div id="materials-tab" class="tab-content active">
+                <div class="section-header">
+                    <h2>Training Materials</h2>
+                    <p>Download resources and study materials for CyberPatriot preparation</p>
+                </div>
+
+                <div class="materials-grid" id="materials-container">
+                    <!-- Materials will be loaded dynamically -->
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading materials...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assignments Tab -->
+            <div id="assignments-tab" class="tab-content">
+                <div class="section-header">
+                    <h2>Current Assignments</h2>
+                    <p>Complete these tasks to practice your cybersecurity skills</p>
+                </div>
+
+                <div class="assignments-container" id="assignments-container">
+                    <!-- Assignments will be loaded dynamically -->
+                    <div class="loading-placeholder">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading assignments...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Tab -->
+            <div id="progress-tab" class="tab-content">
+                <div class="section-header">
+                    <h2>Your Progress</h2>
+                    <p>Track your learning journey and completed assignments</p>
+                </div>
+
+                <div class="progress-dashboard" id="progress-container">
+                    <div class="progress-stats">
+                        <div class="stat-card">
+                            <i class="fas fa-download"></i>
+                            <div class="stat-info">
+                                <span class="stat-number" id="downloads-count">0</span>
+                                <span class="stat-label">Materials Downloaded</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-check-circle"></i>
+                            <div class="stat-info">
+                                <span class="stat-number" id="assignments-completed">0</span>
+                                <span class="stat-label">Assignments Completed</span>
+                            </div>
+                        </div>
+                        
+                        <div class="stat-card">
+                            <i class="fas fa-clock"></i>
+                            <div class="stat-info">
+                                <span class="stat-number" id="assignments-pending">0</span>
+                                <span class="stat-label">Assignments Pending</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="recent-activity">
+                        <h3>Recent Activity</h3>
+                        <div id="recent-activity-list">
+                            <!-- Recent activity will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- Not authenticated message -->
+<div class="auth-required-message">
+    <div class="container">
+        <div class="message-card">
+            <i class="fas fa-lock fa-3x"></i>
+            <h2>Authentication Required</h2>
+            <p>Please sign in with your Google account to access training materials and assignments.</p>
+            <button id="training-login-btn" class="btn btn-primary">
+                <i class="fab fa-google"></i>
+                Sign In with Google
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Assignment Submission Modal -->
+<div id="assignment-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 id="modal-assignment-title">Submit Assignment</h2>
+            <span class="modal-close">&times;</span>
+        </div>
+        <form id="assignment-submission-form">
+            <div class="modal-body">
+                <input type="hidden" id="assignment-id">
+                
+                <div class="form-group">
+                    <label for="submission-notes">Notes/Comments:</label>
+                    <textarea id="submission-notes" name="notes" rows="4" placeholder="Add any notes about your submission..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="submission-file">Upload File (optional):</label>
+                    <input type="file" id="submission-file" name="file" accept=".pdf,.doc,.docx,.txt,.zip">
+                    <small>Supported formats: PDF, DOC, TXT, ZIP (max 10MB)</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="completion-status">Completion Status:</label>
+                    <select id="completion-status" name="status" required>
+                        <option value="">Select status...</option>
+                        <option value="completed">Completed</option>
+                        <option value="partially-completed">Partially Completed</option>
+                        <option value="need-help">Need Help</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary modal-cancel">Cancel</button>
+                <button type="submit" class="btn btn-primary">Submit Assignment</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Check authentication
+    function checkAuth() {
+        if (window.authManager && window.authManager.isSignedIn() && window.authManager.isUserApproved()) {
+            document.querySelector('.auth-required-page').style.display = 'block';
+            document.querySelector('.auth-required-message').style.display = 'none';
+            loadTrainingData();
+        } else {
+            document.querySelector('.auth-required-page').style.display = 'none';
+            document.querySelector('.auth-required-message').style.display = 'block';
+        }
+    }
+
+    // Set up login button
+    const trainingLoginBtn = document.getElementById('training-login-btn');
+    if (trainingLoginBtn) {
+        trainingLoginBtn.addEventListener('click', () => {
+            if (window.authManager) {
+                window.authManager.signIn();
+            }
+        });
+    }
+
+    // Tab functionality
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabName = button.getAttribute('data-tab');
+            
+            // Remove active class from all tabs and contents
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding content
+            button.classList.add('active');
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Load data for specific tabs
+            if (tabName === 'progress') {
+                loadProgressData();
+            }
+        });
+    });
+
+    // Load training data
+    async function loadTrainingData() {
+        await Promise.all([
+            loadMaterials(),
+            loadAssignments()
+        ]);
+    }
+
+    async function loadMaterials() {
+        const container = document.getElementById('materials-container');
+        
+        try {
+            const materials = await window.trainingManager.loadMaterials();
+            
+            if (materials.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-folder-open fa-3x"></i>
+                        <p>No materials available yet. Check back soon!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = materials.map(material => `
+                <div class="material-card">
+                    <div class="material-icon">
+                        <i class="fas fa-${getMaterialIcon(material.type)}"></i>
+                    </div>
+                    <div class="material-info">
+                        <h3>${material.title}</h3>
+                        <p>${material.description || 'No description available'}</p>
+                        <div class="material-meta">
+                            <span class="material-type">${material.type}</span>
+                            <span class="material-date">${formatDate(material.createdAt)}</span>
+                        </div>
+                    </div>
+                    <div class="material-actions">
+                        <button class="btn btn-primary btn-sm" onclick="downloadMaterial('${material.id}')">
+                            <i class="fas fa-download"></i>
+                            Download
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+        } catch (error) {
+            console.error('Error loading materials:', error);
+            container.innerHTML = `
+                <div class="error-state">
+                    <i class="fas fa-exclamation-circle fa-3x"></i>
+                    <p>Error loading materials. Please try again.</p>
+                </div>
+            `;
+        }
+    }
+
+    async function loadAssignments() {
+        const container = document.getElementById('assignments-container');
+        
+        try {
+            const assignments = await window.trainingManager.loadAssignments();
+            
+            if (assignments.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-tasks fa-3x"></i>
+                        <p>No assignments available yet.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = assignments.map(assignment => `
+                <div class="assignment-card ${isAssignmentOverdue(assignment.dueDate) ? 'overdue' : ''}">
+                    <div class="assignment-header">
+                        <h3>${assignment.title}</h3>
+                        <span class="assignment-difficulty ${assignment.difficulty}">
+                            ${assignment.difficulty}
+                        </span>
+                    </div>
+                    <div class="assignment-content">
+                        <p>${assignment.description}</p>
+                        <div class="assignment-details">
+                            <div class="detail">
+                                <i class="fas fa-calendar"></i>
+                                <span>Due: ${formatDate(assignment.dueDate)}</span>
+                            </div>
+                            <div class="detail">
+                                <i class="fas fa-clock"></i>
+                                <span>Estimated: ${assignment.estimatedTime} hours</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="assignment-actions">
+                        <button class="btn btn-secondary btn-sm" onclick="viewAssignment('${assignment.id}')">
+                            <i class="fas fa-eye"></i>
+                            View Details
+                        </button>
+                        <button class="btn btn-primary btn-sm" onclick="submitAssignment('${assignment.id}', '${assignment.title}')">
+                            <i class="fas fa-upload"></i>
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+            
+        } catch (error) {
+            console.error('Error loading assignments:', error);
+            container.innerHTML = `
+                <div class="error-state">
+                    <i class="fas fa-exclamation-circle fa-3x"></i>
+                    <p>Error loading assignments. Please try again.</p>
+                </div>
+            `;
+        }
+    }
+
+    async function loadProgressData() {
+        // Implementation for progress tracking
+        // This would load user's download history, completed assignments, etc.
+        console.log('Loading progress data...');
+    }
+
+    // Helper functions
+    function getMaterialIcon(type) {
+        const icons = {
+            'pdf': 'file-pdf',
+            'video': 'play-circle',
+            'presentation': 'file-powerpoint',
+            'document': 'file-alt',
+            'archive': 'file-archive',
+            'link': 'external-link-alt'
+        };
+        return icons[type] || 'file';
+    }
+
+    function formatDate(timestamp) {
+        if (!timestamp) return 'No date';
+        const date = timestamp.toDate ? timestamp.toDate() : new Date(timestamp);
+        return date.toLocaleDateString();
+    }
+
+    function isAssignmentOverdue(dueDate) {
+        if (!dueDate) return false;
+        const due = dueDate.toDate ? dueDate.toDate() : new Date(dueDate);
+        return due < new Date();
+    }
+
+    // Global functions for buttons
+    window.downloadMaterial = (materialId) => {
+        window.trainingManager.downloadMaterial(materialId);
+    };
+
+    window.viewAssignment = (assignmentId) => {
+        // Implementation for viewing assignment details
+        console.log('Viewing assignment:', assignmentId);
+    };
+
+    window.submitAssignment = (assignmentId, title) => {
+        document.getElementById('assignment-id').value = assignmentId;
+        document.getElementById('modal-assignment-title').textContent = `Submit: ${title}`;
+        document.getElementById('assignment-modal').style.display = 'block';
+    };
+
+    // Modal handling
+    const modal = document.getElementById('assignment-modal');
+    const closeBtn = modal.querySelector('.modal-close');
+    const cancelBtn = modal.querySelector('.modal-cancel');
+
+    closeBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    cancelBtn.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // Assignment submission form
+    const submissionForm = document.getElementById('assignment-submission-form');
+    submissionForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(submissionForm);
+        const assignmentId = document.getElementById('assignment-id').value;
+        
+        const submissionData = {
+            notes: formData.get('notes'),
+            status: formData.get('status')
+        };
+
+        // Handle file upload if provided
+        const fileInput = document.getElementById('submission-file');
+        if (fileInput.files[0]) {
+            // In a real implementation, you'd upload to Firebase Storage
+            // submissionData.fileUrl = await uploadFile(fileInput.files[0]);
+        }
+
+        try {
+            await window.trainingManager.submitAssignment(assignmentId, submissionData);
+            modal.style.display = 'none';
+            submissionForm.reset();
+        } catch (error) {
+            console.error('Submission error:', error);
+        }
+    });
+
+    // Check auth on page load and auth state changes
+    checkAuth();
+    
+    if (window.authManager) {
+        auth.onAuthStateChanged(() => {
+            setTimeout(checkAuth, 100);
+        });
+    }
+});
+</script>

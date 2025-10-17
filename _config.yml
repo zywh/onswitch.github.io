@@ -1,0 +1,65 @@
+# Site settings
+title: OnSwitch Cyber Patriot Coaching
+email: coach@onswitch.ca
+description: >-
+  Cyber Patriot competition coaching and training materials.
+  Helping high school students excel in cybersecurity competitions.
+
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://onswitch.ca" # the base hostname & protocol for your site
+
+# Custom domain for GitHub Pages
+repository: your-username/onswitch
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-sitemap
+  - jekyll-seo-tag
+
+# Sass configuration
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Collections
+collections:
+  training:
+    output: true
+    permalink: /:collection/:name/
+  assignments:
+    output: true
+    permalink: /:collection/:name/
+
+# Defaults
+defaults:
+  - scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+      author: "Coach"
+  - scope:
+      path: ""
+      type: "training"
+    values:
+      layout: "training"
+  - scope:
+      path: ""
+      type: "assignments"
+    values:
+      layout: "assignment"
+
+# Exclude from processing
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
