@@ -80,10 +80,21 @@ class AuthManager {
         };
 
         if (!userDoc.exists) {
-            // New user
+            // New user; promote to admin if no admins exist yet to bootstrap access
             userData.createdAt = firebase.firestore.FieldValue.serverTimestamp();
-            userData.role = 'student'; // Default role
-            userData.approved = false; // Require admin approval
+
+            const adminSnapshot = await db.collection('users')
+                .where('role', '==', 'admin')
+                .limit(1)
+                .get();
+
+            if (adminSnapshot.empty) {
+                userData.role = 'admin';
+                userData.approved = true;
+            } else {
+                userData.role = 'student';
+                userData.approved = false;
+            }
         }
 
         await userRef.set(userData, { merge: true });
@@ -122,6 +133,19 @@ class AuthManager {
                 this.userRole = 'student';
                 this.userApproved = false;
             }
+                    if ((!userData.role || userData.role !== 'admin') && !userData.approved) {
+                        const adminSnapshot = await db.collection('users')
+                            .where('role', '==', 'admin')
+                            .limit(1)
+                            .get();
+
+                        if (adminSnapshot.empty) {
+                            await userDoc.ref.update({ role: 'admin', approved: true });
+                            this.userRole = 'admin';
+                            this.userApproved = true;
+                            return;
+                        }
+                    }
         } catch (error) {
             console.error('Error loading user role:', error);
         }
