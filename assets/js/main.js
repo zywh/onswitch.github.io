@@ -295,18 +295,147 @@ class TrainingManager {
                 throw new Error('Material not found or no file available');
             }
 
-            // Log download
+            // Show loading state
+            const downloadButton = document.querySelector(`button[onclick="downloadMaterial('${materialId}')"]`);
+            if (downloadButton) {
+                const originalText = downloadButton.innerHTML;
+                downloadButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+                downloadButton.disabled = true;
+                
+                setTimeout(() => {
+                    downloadButton.innerHTML = originalText;
+                    downloadButton.disabled = false;
+                }, 2000);
+            }
+
+            // Log download activity
             await db.collection('downloads').add({
                 userId: window.authManager.currentUser.uid,
+                userEmail: window.authManager.currentUser.email,
+                userName: window.authManager.currentUser.displayName,
                 materialId: materialId,
-                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+                materialTitle: material.title,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                downloadType: material.type
             });
 
-            // Open file in new tab
-            window.open(material.fileUrl, '_blank');
+            // Update material download count
+            await db.collection('training-materials').doc(materialId).update({
+                downloadCount: firebase.firestore.FieldValue.increment(1)
+            });
+
+            // Handle different file types
+            if (material.type === 'link') {
+                // External link - open in new tab
+                window.open(material.fileUrl, '_blank', 'noopener,noreferrer');
+            } else {
+                // File download - create download link
+                const link = document.createElement('a');
+                link.href = material.fileUrl;
+                link.download = material.fileName || material.title;
+                link.target = '_blank';
+                link.rel = 'noopener noreferrer';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            window.authManager.showMessage(`Downloaded: ${material.title}`, 'success');
+
         } catch (error) {
             console.error('Error downloading material:', error);
             window.authManager.showMessage('Error downloading file: ' + error.message, 'error');
+        }
+    }
+
+    async getUserProgress() {
+        try {
+            if (!window.authManager.currentUser) return null;
+
+            const userId = window.authManager.currentUser.uid;
+            
+            // Get download count
+            const downloadsSnapshot = await db.collection('downloads')
+                .where('userId', '==', userId)
+                .get();
+            
+            // Get submission count
+            const submissionsSnapshot = await db.collection('submissions')
+                .where('userId', '==', userId)
+                .get();
+
+            // Get assignments for pending count
+            const assignmentsSnapshot = await db.collection('assignments')
+                .where('published', '==', true)
+                .get();
+
+            const completedAssignments = submissionsSnapshot.docs.length;
+            const totalAssignments = assignmentsSnapshot.docs.length;
+            const pendingAssignments = totalAssignments - completedAssignments;
+
+            return {
+                downloadsCount: downloadsSnapshot.docs.length,
+                assignmentsCompleted: completedAssignments,
+                assignmentsPending: pendingAssignments,
+                recentActivity: await this.getRecentActivity(userId)
+            };
+
+        } catch (error) {
+            console.error('Error getting user progress:', error);
+            return null;
+        }
+    }
+
+    async getRecentActivity(userId) {
+        try {
+            const activities = [];
+            
+            // Get recent downloads
+            const downloadsSnapshot = await db.collection('downloads')
+                .where('userId', '==', userId)
+                .orderBy('timestamp', 'desc')
+                .limit(5)
+                .get();
+            
+            downloadsSnapshot.docs.forEach(doc => {
+                const data = doc.data();
+                activities.push({
+                    type: 'download',
+                    title: `Downloaded: ${data.materialTitle}`,
+                    timestamp: data.timestamp,
+                    icon: 'download'
+                });
+            });
+
+            // Get recent submissions
+            const submissionsSnapshot = await db.collection('submissions')
+                .where('userId', '==', userId)
+                .orderBy('submittedAt', 'desc')
+                .limit(5)
+                .get();
+            
+            submissionsSnapshot.docs.forEach(doc => {
+                const data = doc.data();
+                activities.push({
+                    type: 'submission',
+                    title: `Submitted assignment`,
+                    timestamp: data.submittedAt,
+                    icon: 'upload'
+                });
+            });
+
+            // Sort by timestamp
+            activities.sort((a, b) => {
+                const aTime = a.timestamp?.toDate() || new Date(0);
+                const bTime = b.timestamp?.toDate() || new Date(0);
+                return bTime - aTime;
+            });
+
+            return activities.slice(0, 10);
+
+        } catch (error) {
+            console.error('Error getting recent activity:', error);
+            return [];
         }
     }
 

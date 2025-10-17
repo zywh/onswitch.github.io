@@ -1,0 +1,196 @@
+---
+layout: default
+title: "Firebase Test"
+permalink: /test/
+---
+
+<section class="page-header">
+    <div class="container">
+        <h1><i class="fas fa-cog"></i> Firebase Test</h1>
+        <p>Test Firebase connection and functionality</p>
+    </div>
+</section>
+
+<section class="test-section">
+    <div class="container">
+        <div class="test-grid">
+            <div class="test-card">
+                <h3>Authentication Test</h3>
+                <p id="auth-status">Checking...</p>
+                <button id="test-auth" class="btn btn-primary">Test Auth</button>
+            </div>
+            
+            <div class="test-card">
+                <h3>Firestore Test</h3>
+                <p id="firestore-status">Ready</p>
+                <button id="test-firestore" class="btn btn-primary">Test Firestore</button>
+            </div>
+            
+            <div class="test-card">
+                <h3>Storage Test</h3>
+                <p id="storage-status">Ready</p>
+                <input type="file" id="test-file" accept="*/*">
+                <button id="test-storage" class="btn btn-primary">Test Upload</button>
+                <div id="upload-progress-test" style="display: none; margin-top: 10px;">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="test-progress-fill"></div>
+                    </div>
+                    <small id="test-progress-text">Uploading...</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+.test-section {
+    padding: 3rem 0;
+}
+
+.test-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.test-card {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.test-card h3 {
+    color: #2c3e50;
+    margin-bottom: 1rem;
+}
+
+.test-card p {
+    margin-bottom: 1rem;
+    color: #6c757d;
+}
+
+.test-card input {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Test authentication status
+    const authStatus = document.getElementById('auth-status');
+    
+    if (window.authManager) {
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                authStatus.textContent = `Logged in as: ${user.displayName || user.email}`;
+                authStatus.style.color = 'green';
+            } else {
+                authStatus.textContent = 'Not logged in';
+                authStatus.style.color = 'orange';
+            }
+        });
+    } else {
+        authStatus.textContent = 'Auth manager not loaded';
+        authStatus.style.color = 'red';
+    }
+    
+    // Test auth button
+    document.getElementById('test-auth').addEventListener('click', () => {
+        if (window.authManager) {
+            window.authManager.signIn();
+        } else {
+            alert('Auth manager not available');
+        }
+    });
+    
+    // Test Firestore
+    document.getElementById('test-firestore').addEventListener('click', async () => {
+        const firestoreStatus = document.getElementById('firestore-status');
+        
+        try {
+            firestoreStatus.textContent = 'Testing...';
+            firestoreStatus.style.color = 'blue';
+            
+            // Try to read from a collection
+            const testDoc = await db.collection('test').doc('connection').set({
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                message: 'Test connection successful'
+            });
+            
+            firestoreStatus.textContent = 'Firestore connection successful!';
+            firestoreStatus.style.color = 'green';
+            
+        } catch (error) {
+            console.error('Firestore test error:', error);
+            firestoreStatus.textContent = `Error: ${error.message}`;
+            firestoreStatus.style.color = 'red';
+        }
+    });
+    
+    // Test Storage
+    document.getElementById('test-storage').addEventListener('click', async () => {
+        const storageStatus = document.getElementById('storage-status');
+        const fileInput = document.getElementById('test-file');
+        
+        if (!fileInput.files[0]) {
+            alert('Please select a file first');
+            return;
+        }
+        
+        try {
+            storageStatus.textContent = 'Uploading...';
+            storageStatus.style.color = 'blue';
+            
+            const file = fileInput.files[0];
+            const fileName = `test-uploads/${Date.now()}_${file.name}`;
+            const storageRef = storage.ref().child(fileName);
+            
+            // Show progress
+            const progressContainer = document.getElementById('upload-progress-test');
+            const progressFill = document.getElementById('test-progress-fill');
+            const progressText = document.getElementById('test-progress-text');
+            
+            progressContainer.style.display = 'block';
+            
+            const uploadTask = storageRef.put(file);
+            
+            uploadTask.on('state_changed',
+                (snapshot) => {
+                    const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                    progressFill.style.width = progress + '%';
+                    progressText.textContent = `Uploading... ${Math.round(progress)}%`;
+                },
+                (error) => {
+                    console.error('Upload error:', error);
+                    storageStatus.textContent = `Upload error: ${error.message}`;
+                    storageStatus.style.color = 'red';
+                    progressContainer.style.display = 'none';
+                },
+                async () => {
+                    const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                    storageStatus.textContent = 'Upload successful!';
+                    storageStatus.style.color = 'green';
+                    progressText.textContent = 'Upload complete!';
+                    
+                    console.log('File uploaded successfully. Download URL:', downloadURL);
+                    
+                    setTimeout(() => {
+                        progressContainer.style.display = 'none';
+                    }, 2000);
+                }
+            );
+            
+        } catch (error) {
+            console.error('Storage test error:', error);
+            storageStatus.textContent = `Error: ${error.message}`;
+            storageStatus.style.color = 'red';
+        }
+    });
+});
+</script>

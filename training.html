@@ -328,9 +328,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     async function loadProgressData() {
-        // Implementation for progress tracking
-        // This would load user's download history, completed assignments, etc.
-        console.log('Loading progress data...');
+        try {
+            const progress = await window.trainingManager.getUserProgress();
+            
+            if (progress) {
+                // Update statistics
+                document.getElementById('downloads-count').textContent = progress.downloadsCount;
+                document.getElementById('assignments-completed').textContent = progress.assignmentsCompleted;
+                document.getElementById('assignments-pending').textContent = progress.assignmentsPending;
+                
+                // Load recent activity
+                const activityList = document.getElementById('recent-activity-list');
+                if (progress.recentActivity && progress.recentActivity.length > 0) {
+                    activityList.innerHTML = progress.recentActivity.map(activity => `
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-${activity.icon}"></i>
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-description">${activity.title}</div>
+                                <div class="activity-time">${formatDate(activity.timestamp)}</div>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    activityList.innerHTML = `
+                        <div class="empty-state">
+                            <p>No recent activity</p>
+                        </div>
+                    `;
+                }
+            }
+        } catch (error) {
+            console.error('Error loading progress data:', error);
+        }
     }
 
     // Helper functions
@@ -392,29 +423,84 @@ document.addEventListener('DOMContentLoaded', () => {
     submissionForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
-        const formData = new FormData(submissionForm);
-        const assignmentId = document.getElementById('assignment-id').value;
-        
-        const submissionData = {
-            notes: formData.get('notes'),
-            status: formData.get('status')
-        };
-
-        // Handle file upload if provided
-        const fileInput = document.getElementById('submission-file');
-        if (fileInput.files[0]) {
-            // In a real implementation, you'd upload to Firebase Storage
-            // submissionData.fileUrl = await uploadFile(fileInput.files[0]);
-        }
-
         try {
+            window.authManager.showLoading(true);
+            
+            const formData = new FormData(submissionForm);
+            const assignmentId = document.getElementById('assignment-id').value;
+            
+            const submissionData = {
+                notes: formData.get('notes'),
+                status: formData.get('status')
+            };
+
+            // Handle file upload if provided
+            const fileInput = document.getElementById('submission-file');
+            if (fileInput.files[0]) {
+                const file = fileInput.files[0];
+                
+                // Validate file size (10MB limit)
+                if (file.size > 10 * 1024 * 1024) {
+                    throw new Error('File size must be less than 10MB');
+                }
+                
+                // Upload file to Firebase Storage
+                const fileName = `submissions/${window.authManager.currentUser.uid}/${assignmentId}_${Date.now()}_${file.name}`;
+                const storageRef = storage.ref().child(fileName);
+                
+                // Show upload progress
+                const uploadTask = storageRef.put(file);
+                
+                uploadTask.on('state_changed', 
+                    (snapshot) => {
+                        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                        console.log('Upload is ' + progress + '% done');
+                        // Could show progress bar here
+                    }, 
+                    (error) => {
+                        throw error;
+                    }, 
+                    async () => {
+                        submissionData.fileUrl = await uploadTask.snapshot.ref.getDownloadURL();
+                        submissionData.fileName = file.name;
+                        submissionData.fileSize = file.size;
+                        
+                        // Complete submission after upload
+                        await completeSubmission(assignmentId, submissionData);
+                    }
+                );
+            } else {
+                // Submit without file
+                await completeSubmission(assignmentId, submissionData);
+            }
+
+        } catch (error) {
+            console.error('Submission error:', error);
+            window.authManager.showMessage('Error submitting assignment: ' + error.message, 'error');
+        } finally {
+            window.authManager.showLoading(false);
+        }
+    });
+
+    async function completeSubmission(assignmentId, submissionData) {
+        try {
+            // Get assignment details for the submission
+            const assignmentDoc = await db.collection('assignments').doc(assignmentId).get();
+            const assignment = assignmentDoc.data();
+            
+            submissionData.assignmentTitle = assignment?.title || 'Unknown Assignment';
+            
             await window.trainingManager.submitAssignment(assignmentId, submissionData);
             modal.style.display = 'none';
             submissionForm.reset();
+            
+            // Refresh progress data
+            loadProgressData();
+            
         } catch (error) {
-            console.error('Submission error:', error);
+            throw error;
         }
-    });
+    }
 
     // Check auth on page load and auth state changes
     checkAuth();
