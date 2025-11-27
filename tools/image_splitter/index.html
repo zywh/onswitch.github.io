@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Image Grid Splitter · OnSwitch Toolkit</title>
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="tool.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="logo">OnSwitch Labs</div>
+      <div class="header-actions">
+        <nav class="site-nav" aria-label="Primary">
+          <a href="../../index.html" data-i18n="nav.home">Home</a>
+          <a href="../remove_watermarker/" data-i18n="nav.watermarker">Watermark Remover</a>
+        </nav>
+        <div class="lang-toggle" role="group" aria-label="Language">
+          <button class="lang-btn active" data-lang="en" type="button">EN</button>
+          <button class="lang-btn" data-lang="zh" type="button">中文</button>
+        </div>
+      </div>
+      <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <main class="tool-shell">
+      <p class="eyebrow" data-i18n="grid.eyebrow">Tool 02</p>
+      <h1 data-i18n="grid.heading">Split an image into even grids</h1>
+      <p data-i18n="grid.copy">
+        Slice AI generations or thumbnails into equal parts for carousel posts, mood
+        boards, or upload pipelines. All processing happens in the browser.
+      </p>
+
+      <div class="drop-zone" id="dropZone">
+        <p>
+          <span data-i18n="grid.dropText">Drop an image or</span>
+          <label class="upload-label" for="fileInput" data-i18n="grid.dropBrowse">browse</label>
+        </p>
+        <input id="fileInput" type="file" accept="image/*" />
+      </div>
+
+      <div class="control-bar">
+        <label>
+          <span data-i18n="grid.gridLabel">Grid size</span>
+          <select id="gridMode">
+            <option value="2x2">2 x 2</option>
+            <option value="2x3">2 x 3</option>
+            <option value="3x3">3 x 3</option>
+          </select>
+        </label>
+        <label>
+          <span data-i18n="grid.prefix">Naming prefix</span>
+          <input id="filePrefix" type="text" value="onswitch-grid" />
+        </label>
+        <button class="btn primary" id="splitBtn" type="button" data-i18n="grid.split">Split image</button>
+        <button class="btn ghost" id="downloadAll" type="button" data-i18n="grid.downloadAll">Download all</button>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="previewCanvas" aria-label="Original preview"></canvas>
+      </div>
+
+      <div class="tool-grid-output" id="gridOutput" aria-live="polite"></div>
+    </main>
+
+    <footer class="site-footer">
+      <p data-i18n="grid.footer">New tools inherit shared CSS & brand from <code>assets/</code>.</p>
+      <a href="../../index.html" data-i18n="footer.back">Back to home</a>
+    </footer>
+
+    <script src="../../assets/js/main.js" defer></script>
+    <script src="../../assets/js/i18n.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js" defer></script>
+    <script src="tool.js" type="module"></script>
+  </body>
+</html>

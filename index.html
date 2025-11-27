@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OnSwitch Creative Toolkit</title>
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="logo">OnSwitch Labs</div>
+      <div class="header-actions">
+        <nav class="site-nav" aria-label="Primary">
+          <a href="#tools" data-i18n="nav.tools">Tools</a>
+          <a href="#roadmap" data-i18n="nav.roadmap">Roadmap</a>
+          <a href="#about" data-i18n="nav.about">About</a>
+        </nav>
+        <div class="lang-toggle" role="group" aria-label="Language">
+          <button class="lang-btn active" data-lang="en" type="button">EN</button>
+          <button class="lang-btn" data-lang="zh" type="button">中文</button>
+        </div>
+      </div>
+      <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow" data-i18n="hero.eyebrow">Creator Workflow Utilities</p>
+          <h1 data-i18n="hero.title">Build, refine, and share visual tools in one home.</h1>
+          <p class="lede" data-i18n="hero.lede">
+            A growing toolkit for YouTube production, thumbnail polish, and AI image
+            finishing. Start with watermark cleanup and grid slicing, then expand as
+            new ideas strike.
+          </p>
+          <div class="hero-actions">
+            <a class="btn primary" href="#tools" data-i18n="hero.ctaPrimary">Browse tools</a>
+            <a class="btn ghost" href="#roadmap" data-i18n="hero.ctaSecondary">View roadmap</a>
+          </div>
+        </div>
+        <div class="hero-visual" aria-hidden="true">
+          <div class="hero-badge">
+            <span>v0.1</span>
+            <p data-i18n="hero.badgeCopy">2 tools live<br />More on the way</p>
+          </div>
+          <div class="hero-grid">
+            <span data-i18n="hero.grid1">Watermark</span>
+            <span data-i18n="hero.grid2">Grid Splitter</span>
+            <span data-i18n="hero.grid3">Color Prep</span>
+            <span data-i18n="hero.grid4">Batch Uploads</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="tools" class="section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="tools.eyebrow">Toolbox</p>
+            <h2 data-i18n="tools.heading">Launch a utility</h2>
+          </div>
+          <p data-i18n="tools.copy">
+            Each tool gets its own folder so it can scale independently while sharing
+            the same brand system and layout.
+          </p>
+        </div>
+        <div class="card-grid">
+          <article class="tool-card">
+            <h3 data-i18n="tools.watermark.title">Remove Watermarks</h3>
+            <p data-i18n="tools.watermark.desc">
+              Upload, brush over distracting marks, and blend them away locally in
+              the browser. Export the cleaned shot instantly.
+            </p>
+            <a class="btn link" href="tools/remove_watermarker/" data-i18n="tools.card.cta">Open tool</a>
+          </article>
+          <article class="tool-card">
+            <h3 data-i18n="tools.grid.title">Image Grid Splitter</h3>
+            <p data-i18n="tools.grid.desc">
+              Slice AI generations or thumbnails into even grids (2×2, 2×3, 3×3) for
+              storyboards, carousels, and social sets.
+            </p>
+            <a class="btn link" href="tools/image_splitter/" data-i18n="tools.card.cta">Open tool</a>
+          </article>
+          <article class="tool-card upcoming">
+            <h3 data-i18n="tools.prompt.title">Batch Prompt Presets</h3>
+            <p data-i18n="tools.prompt.desc">
+              Centralize go-to prompts and export them for rapid AI experimentation.
+            </p>
+            <span class="status-pill" data-i18n="tools.prompt.status">Coming soon</span>
+          </article>
+        </div>
+      </section>
+
+      <section id="roadmap" class="section alt">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="roadmap.eyebrow">Roadmap</p>
+            <h2 data-i18n="roadmap.heading">Next up for OnSwitch</h2>
+          </div>
+          <p data-i18n="roadmap.copy">
+            The site is structured so every tool is isolated in its own subfolder,
+            keeping dependencies tidy while sharing the same global styles.
+          </p>
+        </div>
+        <ul class="roadmap">
+          <li>
+            <p class="label">Q1</p>
+            <div>
+              <h3 data-i18n="roadmap.q1.title">Color palette harmonizer</h3>
+              <p data-i18n="roadmap.q1.desc">Match channel branding across assets using sampled palettes.</p>
+            </div>
+          </li>
+          <li>
+            <p class="label">Q2</p>
+            <div>
+              <h3 data-i18n="roadmap.q2.title">Caption kit</h3>
+              <p data-i18n="roadmap.q2.desc">Auto-generate subtitles, style them, and export SRT/LRC.</p>
+            </div>
+          </li>
+          <li>
+            <p class="label">Q3</p>
+            <div>
+              <h3 data-i18n="roadmap.q3.title">Batch exporter</h3>
+              <p data-i18n="roadmap.q3.desc">Queue renders and publish sets directly to storage destinations.</p>
+            </div>
+          </li>
+        </ul>
+      </section>
+
+      <section id="about" class="section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="about.eyebrow">About</p>
+            <h2 data-i18n="about.heading">Built for fast experimentation</h2>
+          </div>
+        </div>
+        <div class="about-grid">
+          <p data-i18n="about.copy1">
+            OnSwitch is the workbench for quick-hit utilities that speed up creative
+            workflows. Every page relies on a shared CSS/JS foundation so the brand
+            stays consistent even as tools evolve independently.
+          </p>
+          <p data-i18n="about.copy2">
+            Have an idea for the next module? Duplicate a tool folder, wire up your
+            script, and plug it into the navigation—no build step required.
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p data-i18n="footer.made">Made by OnSwitch · Creator Ops Toolkit</p>
+      <div>
+        <a href="#" data-i18n="footer.docs">Docs</a>
+        <a href="#" data-i18n="footer.changelog">Changelog</a>
+        <a href="mailto:hello@onswitch.tools" data-i18n="footer.contact">Contact</a>
+      </div>
+    </footer>
+
+    <script src="assets/js/main.js" defer></script>
+    <script src="assets/js/i18n.js" defer></script>
+  </body>
+</html>

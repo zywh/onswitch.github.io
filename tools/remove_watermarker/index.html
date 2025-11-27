@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Remove Watermark · OnSwitch Toolkit</title>
+    <link rel="stylesheet" href="../../assets/css/main.css" />
+    <link rel="stylesheet" href="tool.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="logo">OnSwitch Labs</div>
+      <div class="header-actions">
+        <nav class="site-nav" aria-label="Primary">
+          <a href="../../index.html" data-i18n="nav.home">Home</a>
+          <a href="../image_splitter/" data-i18n="nav.grid">Grid Splitter</a>
+        </nav>
+        <div class="lang-toggle" role="group" aria-label="Language">
+          <button class="lang-btn active" data-lang="en" type="button">EN</button>
+          <button class="lang-btn" data-lang="zh" type="button">中文</button>
+        </div>
+      </div>
+      <button class="nav-toggle" aria-expanded="false" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </header>
+
+    <main class="tool-shell">
+      <p class="eyebrow" data-i18n="watermark.eyebrow">Tool 01</p>
+      <h1 data-i18n="watermark.heading">Remove watermarks & blemishes</h1>
+      <p data-i18n="watermark.copy">
+        Upload an image, paint over the area you want to hide, then blend it away in
+        the browser using a simple sampling-based inpaint pass. Your image never
+        leaves the page.
+      </p>
+
+      <div class="drop-zone" id="dropZone">
+        <p>
+          <span data-i18n="watermark.dropText">Drop an image or</span>
+          <label class="upload-label" for="fileInput" data-i18n="watermark.dropBrowse">browse</label>
+        </p>
+        <input id="fileInput" type="file" accept="image/*" />
+      </div>
+
+      <div class="control-bar">
+        <label>
+          <span data-i18n="watermark.brush">Brush size</span>
+          <input id="brushSize" type="range" min="10" max="120" value="30" />
+        </label>
+        <label>
+          <span data-i18n="watermark.opacity">Overlay opacity</span>
+          <input id="maskOpacity" type="range" min="0.1" max="0.9" value="0.4" step="0.1" />
+        </label>
+        <div class="brush-preview">
+          <span data-i18n="watermark.preview">Brush preview</span>
+          <canvas id="brushPreview" width="80" height="80"></canvas>
+        </div>
+      </div>
+
+      <div class="canvas-wrap">
+        <canvas id="imageCanvas" width="0" height="0" aria-label="Image workspace"></canvas>
+      </div>
+
+      <div class="action-row">
+        <button class="btn ghost" id="clearMask" type="button" data-i18n="watermark.clear">Clear mask</button>
+        <button class="btn primary" id="applyBlend" type="button" data-i18n="watermark.apply">Remove watermark</button>
+        <button class="btn ghost" id="downloadImage" type="button" data-i18n="watermark.download">Download result</button>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p data-i18n="watermark.footer">Need another workflow helper? Add it under <code>tools/</code> and plug it into the nav.</p>
+      <a href="../../index.html" data-i18n="footer.back">Back to home</a>
+    </footer>
+
+    <script src="../../assets/js/main.js" defer></script>
+    <script src="../../assets/js/i18n.js" defer></script>
+    <script src="tool.js" type="module"></script>
+  </body>
+</html>
