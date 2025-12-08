@@ -1,0 +1,531 @@
+/* =====================================================
+   Audio Player - Mobile-First Chinese Interface
+   ===================================================== */
+
+/* Reset and base overrides for this page */
+body {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic viewport height for mobile */
+  padding-bottom: 140px; /* Space for now-playing bar */
+}
+
+/* Compact header for audio player */
+.site-header.compact {
+  padding: 0.75rem 1rem;
+  justify-content: space-between;
+}
+
+.site-header.compact .logo {
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.refresh-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: var(--text-secondary, #a0a0b0);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.refresh-btn:hover,
+.refresh-btn:active {
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--text-primary, #fff);
+}
+
+.refresh-btn.spinning svg {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Main shell */
+.audio-shell {
+  padding: 1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Hidden utility */
+.hidden {
+  display: none !important;
+}
+
+/* Loading state */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--accent, #6c5ce7);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+.loading-state p {
+  color: var(--text-secondary, #a0a0b0);
+  font-size: 1rem;
+}
+
+/* Error state */
+.error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+}
+
+.error-message {
+  color: var(--text-secondary, #a0a0b0);
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Empty state */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state p {
+  color: var(--text-secondary, #a0a0b0);
+  font-size: 1.125rem;
+  margin: 0;
+}
+
+.empty-hint {
+  font-size: 0.875rem !important;
+  margin-top: 0.5rem !important;
+  opacity: 0.7;
+}
+
+/* Episode list */
+.episode-list {
+  display: block;
+}
+
+.last-updated {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #a0a0b0);
+  text-align: center;
+  margin-bottom: 1rem;
+  opacity: 0.7;
+}
+
+.episodes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Episode card */
+.episode-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 1rem;
+  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.episode-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.episode-card.playing {
+  background: rgba(108, 92, 231, 0.15);
+  border-color: rgba(108, 92, 231, 0.3);
+}
+
+.episode-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  margin-bottom: 0.75rem;
+}
+
+.episode-thumb {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+
+.episode-thumb-placeholder {
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  background: linear-gradient(135deg, rgba(108, 92, 231, 0.3), rgba(108, 92, 231, 0.1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 1.5rem;
+}
+
+.episode-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.episode-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary, #fff);
+  margin: 0 0 0.25rem 0;
+  line-height: 1.3;
+  /* Allow text to wrap */
+  word-wrap: break-word;
+}
+
+.episode-meta {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  color: var(--text-secondary, #a0a0b0);
+}
+
+.episode-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.episode-description {
+  font-size: 0.875rem;
+  color: var(--text-secondary, #a0a0b0);
+  line-height: 1.5;
+  margin: 0 0 1rem 0;
+  /* Clamp to 2 lines */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.episode-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.episode-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  /* Minimum touch target */
+  min-height: 48px;
+}
+
+.episode-btn.play-btn {
+  background: var(--accent, #6c5ce7);
+  color: #fff;
+}
+
+.episode-btn.play-btn:hover,
+.episode-btn.play-btn:active {
+  background: #5b4cdb;
+}
+
+.episode-btn.play-btn.playing {
+  background: rgba(108, 92, 231, 0.3);
+}
+
+.episode-btn.download-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary, #fff);
+}
+
+.episode-btn.download-btn:hover,
+.episode-btn.download-btn:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.episode-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Now Playing Bar */
+.now-playing {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(26, 26, 46, 0.98);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem 1rem;
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  z-index: 100;
+}
+
+.now-playing-info {
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.now-playing-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary, #fff);
+  margin: 0 0 0.25rem 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.now-playing-time {
+  font-size: 0.75rem;
+  color: var(--text-secondary, #a0a0b0);
+  margin: 0;
+}
+
+.now-playing-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.control-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border: none;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  color: var(--text-primary, #fff);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.control-btn:hover,
+.control-btn:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.control-btn.play-pause {
+  width: 56px;
+  height: 56px;
+  background: var(--accent, #6c5ce7);
+}
+
+.control-btn.play-pause:hover,
+.control-btn.play-pause:active {
+  background: #5b4cdb;
+}
+
+/* Progress bar */
+.progress-bar-container {
+  width: 100%;
+  padding: 0.25rem 0;
+}
+
+.progress-bar {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  outline: none;
+  cursor: pointer;
+}
+
+.progress-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent, #6c5ce7);
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.progress-bar::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--accent, #6c5ce7);
+  cursor: pointer;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Primary button override for this page */
+.btn.primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.875rem 1.5rem;
+  min-height: 48px;
+  font-size: 1rem;
+}
+
+/* =====================================================
+   Responsive Adjustments
+   ===================================================== */
+
+@media (min-width: 480px) {
+  .audio-shell {
+    padding: 1.5rem;
+  }
+  
+  .episode-card {
+    padding: 1.25rem;
+  }
+  
+  .episode-thumb,
+  .episode-thumb-placeholder {
+    width: 80px;
+    height: 80px;
+  }
+  
+  .episode-title {
+    font-size: 1.125rem;
+  }
+  
+  .episode-description {
+    -webkit-line-clamp: 3;
+  }
+}
+
+@media (min-width: 768px) {
+  body {
+    padding-bottom: 160px;
+  }
+  
+  .now-playing {
+    padding: 1rem 2rem;
+  }
+  
+  .now-playing-controls {
+    gap: 1.5rem;
+  }
+  
+  .control-btn {
+    width: 52px;
+    height: 52px;
+  }
+  
+  .control-btn.play-pause {
+    width: 64px;
+    height: 64px;
+  }
+}
+
+/* =====================================================
+   Dark mode is default, but ensure consistency
+   ===================================================== */
+
+@media (prefers-color-scheme: light) {
+  /* Keep dark theme regardless of system preference */
+  body {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  }
+}
+
+/* =====================================================
+   Animation for new episodes
+   ===================================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.episode-card {
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.episode-card:nth-child(1) { animation-delay: 0s; }
+.episode-card:nth-child(2) { animation-delay: 0.05s; }
+.episode-card:nth-child(3) { animation-delay: 0.1s; }
+.episode-card:nth-child(4) { animation-delay: 0.15s; }
+.episode-card:nth-child(5) { animation-delay: 0.2s; }
+
+/* =====================================================
+   Accessibility - Focus states
+   ===================================================== */
+
+.episode-btn:focus-visible,
+.control-btn:focus-visible,
+.refresh-btn:focus-visible {
+  outline: 2px solid var(--accent, #6c5ce7);
+  outline-offset: 2px;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .spinner,
+  .refresh-btn.spinning svg {
+    animation-duration: 2s;
+  }
+  
+  .episode-card {
+    animation: none;
+  }
+}

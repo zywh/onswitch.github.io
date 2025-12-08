@@ -1,0 +1,32 @@
+{
+  "lastUpdated": "2024-12-08T15:00:00Z",
+  "episodes": [
+    {
+      "id": "2024-12-08-sample-3",
+      "title": "今日分享：如何高效学习新技能",
+      "description": "在这期节目中，我们将探讨一些实用的学习方法和技巧，帮助你更快地掌握新技能。包括番茄工作法、间隔重复等科学方法。",
+      "date": "2024-12-08",
+      "duration": "15:32",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3",
+      "thumbnail": null
+    },
+    {
+      "id": "2024-12-05-sample-2",
+      "title": "周末故事：童年回忆录",
+      "description": "和大家分享一些温馨的童年故事，那些简单而美好的时光。希望能唤起你内心深处的美好记忆。",
+      "date": "2024-12-05",
+      "duration": "22:45",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3",
+      "thumbnail": null
+    },
+    {
+      "id": "2024-12-01-sample-1",
+      "title": "生活小贴士：冬季养生之道",
+      "description": "冬天到了，如何保持身体健康？这期节目为大家带来一些实用的冬季养生建议，从饮食到运动，全方位呵护您的健康。",
+      "date": "2024-12-01",
+      "duration": "18:20",
+      "audioUrl": "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
+      "thumbnail": null
+    }
+  ]
+}
