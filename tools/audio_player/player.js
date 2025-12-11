@@ -9,6 +9,7 @@
 const CONFIG = {
   // RSS Feed URL
   rssUrl: 'https://podcast.onswitch.ca/podcast/feed.xml',
+  // rssUrl: './feed.xml', // Local testing
 
   // Cache duration in milliseconds (5 minutes)
   cacheDuration: 5 * 60 * 1000,
@@ -179,7 +180,10 @@ async function loadEpisodes() {
       return;
     }
 
-    const channelImage = xmlDoc.querySelector('channel > image > url')?.textContent;
+    let channelImage = xmlDoc.querySelector('channel > image > url')?.textContent;
+    if (!channelImage) {
+      channelImage = xmlDoc.querySelector('channel > itunes\\:image, channel > image')?.getAttribute('href');
+    }
 
     episodes = Array.from(items).map(item => {
       const enclosure = item.querySelector('enclosure');
