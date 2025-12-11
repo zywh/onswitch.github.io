@@ -2,14 +2,57 @@
    Audio Player - Mobile-First Chinese Interface
    ===================================================== */
 
+:root {
+  /* Core Colors */
+  --accent: #6c5ce7;
+  --accent-rgb: 108, 92, 231;
+  
+  /* Dark Theme (Default) */
+  --bg-gradient: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  --text-primary: #ffffff;
+  --text-secondary: #a0a0b0;
+  --card-bg: rgba(255, 255, 255, 0.05);
+  --card-hover: rgba(255, 255, 255, 0.08);
+  --card-border: rgba(255, 255, 255, 0.05);
+  --button-bg: rgba(255, 255, 255, 0.1);
+  --button-hover: rgba(255, 255, 255, 0.2);
+  --playing-bar-bg: rgba(26, 26, 46, 0.98);
+  --border-color: rgba(255, 255, 255, 0.1);
+  --slider-track: rgba(255, 255, 255, 0.2);
+  --slider-thumb-border: #ffffff;
+  --thumb-bg: rgba(255, 255, 255, 0.1);
+  --thumb-placeholder-bg: linear-gradient(135deg, rgba(108, 92, 231, 0.3), rgba(108, 92, 231, 0.1));
+  --shadow-color: rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="light"] {
+  --bg-gradient: linear-gradient(135deg, #f5f7fa 0%, #e4e7eb 100%);
+  --text-primary: #2d3436;
+  --text-secondary: #636e72;
+  --card-bg: #ffffff;
+  --card-hover: #f8f9fa;
+  --card-border: rgba(0, 0, 0, 0.06);
+  --button-bg: rgba(0, 0, 0, 0.06);
+  --button-hover: rgba(0, 0, 0, 0.1);
+  --playing-bar-bg: rgba(255, 255, 255, 0.95);
+  --border-color: rgba(0, 0, 0, 0.1);
+  --slider-track: rgba(0, 0, 0, 0.1);
+  --slider-thumb-border: #ffffff;
+  --thumb-bg: rgba(0, 0, 0, 0.05);
+  --thumb-placeholder-bg: linear-gradient(135deg, rgba(108, 92, 231, 0.2), rgba(108, 92, 231, 0.05));
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
 /* Reset and base overrides for this page */
 body {
-  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  background: var(--bg-gradient);
+  color: var(--text-primary);
   min-height: 100vh;
   min-height: 100dvh;
   /* Dynamic viewport height for mobile */
   padding-bottom: 140px;
   /* Space for now-playing bar */
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 /* Compact header for audio player */
@@ -30,17 +73,17 @@ body {
   width: 44px;
   height: 44px;
   border: none;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--button-bg);
   border-radius: 50%;
-  color: var(--text-secondary, #a0a0b0);
+  color: var(--text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .refresh-btn:hover,
 .refresh-btn:active {
-  background: rgba(255, 255, 255, 0.2);
-  color: var(--text-primary, #fff);
+  background: var(--button-hover);
+  color: var(--text-primary);
 }
 
 .refresh-btn.spinning svg {
@@ -82,15 +125,15 @@ body {
 .spinner {
   width: 40px;
   height: 40px;
-  border: 3px solid rgba(255, 255, 255, 0.1);
-  border-top-color: var(--accent, #6c5ce7);
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent);
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
 }
 
 .loading-state p {
-  color: var(--text-secondary, #a0a0b0);
+  color: var(--text-secondary);
   font-size: 1rem;
 }
 
@@ -110,7 +153,7 @@ body {
 }
 
 .error-message {
-  color: var(--text-secondary, #a0a0b0);
+  color: var(--text-secondary);
   font-size: 1rem;
   margin-bottom: 1.5rem;
 }
@@ -132,7 +175,7 @@ body {
 }
 
 .empty-state p {
-  color: var(--text-secondary, #a0a0b0);
+  color: var(--text-secondary);
   font-size: 1.125rem;
   margin: 0;
 }
@@ -150,7 +193,7 @@ body {
 
 .last-updated {
   font-size: 0.75rem;
-  color: var(--text-secondary, #a0a0b0);
+  color: var(--text-secondary);
   text-align: center;
   margin-bottom: 0.75rem;
   opacity: 0.7;
@@ -170,11 +213,11 @@ body {
 .episode-card {
   display: flex;
   flex-direction: column;
-  background: rgba(255, 255, 255, 0.05);
+  background: var(--card-bg);
   border-radius: 8px;
   padding: 0.5rem;
   transition: all 0.2s ease;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--card-border);
   cursor: pointer;
   /* Indicate clickable */
 }
@@ -189,12 +232,12 @@ body {
 }
 
 .episode-card:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.1);
+  background: var(--card-hover);
+  border-color: var(--border-color);
 }
 
 .episode-card.playing {
-  background: rgba(108, 92, 231, 0.15);
+  background: rgba(108, 92, 231, 0.1);
   border-color: rgba(108, 92, 231, 0.3);
 }
 
@@ -203,7 +246,7 @@ body {
   height: 48px;
   border-radius: 6px;
   object-fit: cover;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--thumb-bg);
   flex-shrink: 0;
 }
 
@@ -211,7 +254,7 @@ body {
   width: 48px;
   height: 48px;
   border-radius: 6px;
-  background: linear-gradient(135deg, rgba(108, 92, 231, 0.3), rgba(108, 92, 231, 0.1));
+  background: var(--thumb-placeholder-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -231,7 +274,7 @@ body {
 .episode-title {
   font-size: 0.9375rem;
   font-weight: 500;
-  color: var(--text-primary, #fff);
+  color: var(--text-primary);
   margin: 0;
   line-height: 1.2;
   white-space: nowrap;
@@ -243,7 +286,7 @@ body {
   display: flex;
   gap: 0.75rem;
   font-size: 0.75rem;
-  color: var(--text-secondary, #a0a0b0);
+  color: var(--text-secondary);
 }
 
 .episode-meta span {
@@ -255,11 +298,11 @@ body {
 .episode-description {
   display: none;
   font-size: 0.875rem;
-  color: var(--text-secondary, #a0a0b0);
+  color: var(--text-secondary);
   line-height: 1.5;
   margin-top: 0.75rem;
   padding-top: 0.75rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  border-top: 1px solid var(--border-color);
   padding-bottom: 0.25rem;
 }
 
@@ -335,13 +378,13 @@ body {
 
 .episode-btn.download-btn {
   background: transparent;
-  color: var(--text-secondary, #a0a0b0);
+  color: var(--text-secondary);
 }
 
 .episode-btn.download-btn:hover,
 .episode-btn.download-btn:active {
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--text-primary, #fff);
+  background: var(--button-bg);
+  color: var(--text-primary);
 }
 
 .episode-btn svg {
@@ -355,13 +398,14 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(26, 26, 46, 0.98);
+  background: var(--playing-bar-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--border-color);
   padding: 0.75rem 1rem;
   padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
   z-index: 100;
+  transition: background 0.3s ease;
 }
 
 .now-playing-info {
@@ -372,7 +416,7 @@ body {
 .now-playing-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: var(--text-primary, #fff);
+  color: var(--text-primary);
   margin: 0 0 0.25rem 0;
   white-space: nowrap;
   overflow: hidden;
@@ -381,7 +425,7 @@ body {
 
 .now-playing-time {
   font-size: 0.75rem;
-  color: var(--text-secondary, #a0a0b0);
+  color: var(--text-secondary);
   margin: 0;
 }
 
@@ -400,16 +444,16 @@ body {
   width: 48px;
   height: 48px;
   border: none;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--button-bg);
   border-radius: 50%;
-  color: var(--text-primary, #fff);
+  color: var(--text-primary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .control-btn:hover,
 .control-btn:active {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--button-hover);
 }
 
 .control-btn.play-pause {
@@ -435,7 +479,7 @@ body {
   width: 100%;
   height: 4px;
   border-radius: 2px;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--slider-track);
   outline: none;
   cursor: pointer;
 }
@@ -448,8 +492,8 @@ body {
   border-radius: 50%;
   background: var(--accent, #6c5ce7);
   cursor: pointer;
-  border: 2px solid #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--slider-thumb-border);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 .progress-bar::-moz-range-thumb {
@@ -458,8 +502,8 @@ body {
   border-radius: 50%;
   background: var(--accent, #6c5ce7);
   cursor: pointer;
-  border: 2px solid #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  border: 2px solid var(--slider-thumb-border);
+  box-shadow: 0 2px 4px var(--shadow-color);
 }
 
 /* Primary button override for this page */
@@ -528,12 +572,26 @@ body {
    Dark mode is default, but ensure consistency
    ===================================================== */
 
-@media (prefers-color-scheme: light) {
 
-  /* Keep dark theme regardless of system preference */
-  body {
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-  }
+/* Theme button */
+.theme-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  background: var(--button-bg);
+  border-radius: 50%;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-btn:hover,
+.theme-btn:active {
+  background: var(--button-hover);
+  color: var(--text-primary);
 }
 
 /* =====================================================
@@ -582,7 +640,8 @@ body {
 
 .episode-btn:focus-visible,
 .control-btn:focus-visible,
-.refresh-btn:focus-visible {
+.refresh-btn:focus-visible,
+.theme-btn:focus-visible {
   outline: 2px solid var(--accent, #6c5ce7);
   outline-offset: 2px;
 }

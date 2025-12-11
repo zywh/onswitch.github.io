@@ -57,6 +57,7 @@ const elements = {
 
   // Header
   refreshBtn: $('refreshBtn'),
+  themeBtn: $('themeBtn'),
 };
 
 // =====================================================
@@ -130,6 +131,40 @@ function showState(state) {
 function showError(message) {
   elements.errorMessage.textContent = message;
   showState('errorState');
+}
+
+// =====================================================
+// Theme Management
+// =====================================================
+
+function toggleTheme() {
+  const currentTheme = document.documentElement.getAttribute('data-theme');
+  const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+  
+  document.documentElement.setAttribute('data-theme', newTheme);
+  localStorage.setItem('theme', newTheme);
+  updateThemeIcon(newTheme);
+}
+
+function updateThemeIcon(theme) {
+  const iconMoon = elements.themeBtn.querySelector('.icon-moon');
+  const iconSun = elements.themeBtn.querySelector('.icon-sun');
+  
+  if (theme === 'light') {
+    iconMoon.classList.add('hidden');
+    iconSun.classList.remove('hidden');
+  } else {
+    iconMoon.classList.remove('hidden');
+    iconSun.classList.add('hidden');
+  }
+}
+
+function initTheme() {
+  const savedTheme = localStorage.getItem('theme') || 'dark';
+  document.documentElement.setAttribute('data-theme', savedTheme);
+  updateThemeIcon(savedTheme);
+  
+  elements.themeBtn.addEventListener('click', toggleTheme);
 }
 
 // =====================================================
@@ -521,6 +556,7 @@ function init() {
   setupAudioEvents();
   setupControls();
   setupMediaSession();
+  initTheme();
   loadEpisodes();
 }
 
