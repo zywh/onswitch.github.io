@@ -7,9 +7,12 @@
 // Configuration - Update these values for your R2 bucket
 // =====================================================
 const CONFIG = {
-  // RSS Feed URL
-  rssUrl: 'https://podcast.onswitch.ca/podcast/feed.xml',
-  // rssUrl: './feed.xml', // Local testing
+  // RSS Feeds
+  feeds: [
+    { id: 'daily', name: '天天学习', url: 'https://podcast.onswitch.ca/podcast/feed.xml' },
+    { id: 'news', name: '每日新闻', url: 'https://podcast.onswitch.ca/podcast/ybzj_news.xml' }
+  ],
+  defaultFeedId: 'daily',
 
   // Cache duration in milliseconds (5 minutes)
   cacheDuration: 5 * 60 * 1000,
@@ -58,6 +61,7 @@ const elements = {
   // Header
   refreshBtn: $('refreshBtn'),
   themeBtn: $('themeBtn'),
+  feedSelect: $('feedSelect'),
 };
 
 // =====================================================
@@ -134,13 +138,38 @@ function showError(message) {
 }
 
 // =====================================================
+// Feed Management
+// =====================================================
+
+function getActiveFeed() {
+  const savedId = localStorage.getItem('activeFeedId');
+  const feed = CONFIG.feeds.find(f => f.id === savedId) || CONFIG.feeds.find(f => f.id === CONFIG.defaultFeedId);
+  return feed;
+}
+
+function initFeedSelector() {
+  const activeFeed = getActiveFeed();
+
+  elements.feedSelect.innerHTML = CONFIG.feeds.map(feed => `
+    <option value="${feed.id}" ${feed.id === activeFeed.id ? 'selected' : ''}>
+      ${feed.name}
+    </option>
+  `).join('');
+
+  elements.feedSelect.addEventListener('change', (e) => {
+    localStorage.setItem('activeFeedId', e.target.value);
+    loadEpisodes();
+  });
+}
+
+// =====================================================
 // Theme Management
 // =====================================================
 
 function toggleTheme() {
   const currentTheme = document.documentElement.getAttribute('data-theme');
   const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-  
+
   document.documentElement.setAttribute('data-theme', newTheme);
   localStorage.setItem('theme', newTheme);
   updateThemeIcon(newTheme);
@@ -149,7 +178,7 @@ function toggleTheme() {
 function updateThemeIcon(theme) {
   const iconMoon = elements.themeBtn.querySelector('.icon-moon');
   const iconSun = elements.themeBtn.querySelector('.icon-sun');
-  
+
   if (theme === 'light') {
     iconMoon.classList.add('hidden');
     iconSun.classList.remove('hidden');
@@ -163,7 +192,7 @@ function initTheme() {
   const savedTheme = localStorage.getItem('theme') || 'dark';
   document.documentElement.setAttribute('data-theme', savedTheme);
   updateThemeIcon(savedTheme);
-  
+
   elements.themeBtn.addEventListener('click', toggleTheme);
 }
 
@@ -176,7 +205,8 @@ async function fetchAndParseRSS() {
 
   try {
     // Add cache-busting query parameter
-    const url = CONFIG.rssUrl + (CONFIG.rssUrl.includes('?') ? '&' : '?') + `_t=${Date.now()}`;
+    const activeFeed = getActiveFeed();
+    const url = activeFeed.url + (activeFeed.url.includes('?') ? '&' : '?') + `_t=${Date.now()}`;
 
     const response = await fetch(url);
 
@@ -557,6 +587,7 @@ function init() {
   setupControls();
   setupMediaSession();
   initTheme();
+  initFeedSelector();
   loadEpisodes();
 }
 
