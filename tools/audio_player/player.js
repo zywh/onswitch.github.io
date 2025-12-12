@@ -9,7 +9,7 @@
 const CONFIG = {
   // RSS Feeds
   feeds: [
-    { id: 'daily', name: '天天学习', url: 'https://podcast.onswitch.ca/podcast/feed.xml' },
+    { id: 'daily', name: '天天学习', url: 'https://podcast.onswitch.ca/podcast/ybzj_dailybook.xml' },
     { id: 'news', name: '每日新闻', url: 'https://podcast.onswitch.ca/podcast/ybzj_news.xml' }
   ],
   defaultFeedId: 'daily',
